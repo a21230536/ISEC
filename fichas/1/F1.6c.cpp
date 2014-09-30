@@ -1,26 +1,33 @@
 // Ficha 1, Exercício 6
 //-----------------------------------------------------------------------------
-// (b) Explique por que razão são necessários os ponteiros.
+// (c) Escreva a função pretendida utilizando parâmetros do tipo referência.
 //-----------------------------------------------------------------------------
 #include <iostream>
 
 using namespace std;
 
-// troca os valores das variáveis a, b
-void troca(int* a, int* b){
-	int c = *a;
+// constantes não podem ser alterados
+//void troca(const int& a, const int& b){}
 
-	*a = *b;
-	*b = c;
+void troca(int& a, int& b){
+	int c = a;
+
+	a = b;
+	b = c;
 }
+
 
 int main(){
 	int a = 5, b = 10;
+	troca(a, b);
 
-	troca(&a, &b);
-
-	// mostra "a = 10; b = 5"
+	// mostra a = 10; b = 5
 	cout << "\na = " << a << "; b = " << b << "\n";
 
 	return 0;
 }
+
+//-----------------------------------------------------------------------------
+// (d) Comparar parâmetros do tipo referência com os do tipo ponteiro
+//-----------------------------------------------------------------------------
+// ...
