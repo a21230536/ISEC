@@ -1,6 +1,5 @@
 // Ficha 2, Exercício 5
 #include <iostream>
-#include <sstream>
 #include <string>
 
 using namespace std;
@@ -34,7 +33,6 @@ struct Automovel{
 	void setOutros(string);
 
 	// funções para manipular todos os valores
-	string getString();
 	void mostra();
 	void setPorCin();
 
@@ -55,20 +53,6 @@ int main(){
 	}
 
 	return 0;
-}
-
-// devolve todos valores em formato de texto
-string Automovel::getString(){
-	ostringstream automovelString;
-
-	automovelString << "\nAutomovel\nMatricula:" << matricula
-		<<"\nCombustivel:" << combustivel
-		<<"\nMarca: " << marca
-		<< "\nModelo: " << modelo
-		<<"\nCor: " << marca
-		<< "\nOutros: " << outros << endl;
-
-	return automovelString.str();
 }
 
 // mostra na consola todos os valores
