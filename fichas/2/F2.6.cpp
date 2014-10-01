@@ -68,7 +68,7 @@ int main(){
 }
 
 //-----------------------------------------------------------------------------
-// (b) Analise as regras mais óbvias do mundo real acerca de automóveis,
+// (b) Analisar as regras mais óbvias do mundo real acerca de automóveis,
 //     nomeadamente no que diz respeito à sua construção e inicialização...
 //-----------------------------------------------------------------------------
 
@@ -81,8 +81,8 @@ Automovel::Automovel(string mat, string com, string mar,
 }
 
 //-----------------------------------------------------------------------------
-// (c) Escreva uma função que permita obter a representação textual do conteúdo
-//     da estrutura...
+// (c) Escrever uma função que permite obter a representação textual dos 
+//     valores do objecto...
 //-----------------------------------------------------------------------------
 string Automovel::getString(){
 	ostringstream automovelString;
@@ -97,7 +97,7 @@ string Automovel::getString(){
 	return automovelString.str();
 }
 
-// mostra na consola todos os valores
+// mostra na consola todos os valores do objecto
 void Automovel::mostra(){
 	cout << endl
 	     << "Automovel" << endl
