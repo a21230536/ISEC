@@ -139,11 +139,6 @@ void Automovel::setPorCin(){
 	setOutros(out);
 }
 
-//-----------------------------------------------------------------------------
-// (c) Escrever uma função que preencha o conteúdo de uma variável do tipo
-//     Automovel com valores fornecidos. Evitar interagir com o utilizador
-//     directamente dentro das funções que manipulam os dados da estrutura.
-//-----------------------------------------------------------------------------
 void Automovel::set(string mat, string com, string mar,
 		string mod, string cor, string out){
 	setMatricula(mat);
