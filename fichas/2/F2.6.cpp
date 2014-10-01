@@ -14,7 +14,7 @@ class Automovel{
 	string marca;
 	string modelo;
 	string cor;
-	string outros;//int ano;//int rodas;
+	string outros;
 
 public:
 
