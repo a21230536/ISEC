@@ -98,9 +98,9 @@ void Automovel::setPorCin(){
 }
 
 //-----------------------------------------------------------------------------
-// (c) Escrever uma função que preencha o conteúdo de uma variável do tipo
-//     Automovel com valores fornecidos. Evitar interagir com o utilizador
-//     directamente dentro das funções que manipulam os dados da estrutura.
+// (c) Função que preenche o conteúdo de uma variável do tipo Automovel com
+//     valores fornecidos. Evitar interagir com o utilizador directamente
+//     dentro das funções que manipulam os dados da estrutura.
 //-----------------------------------------------------------------------------
 void Automovel::set(string mat, string com, string mar,
 		string mod, string cor, string out){
@@ -113,7 +113,7 @@ void Automovel::set(string mat, string com, string mar,
 }
 
 //-----------------------------------------------------------------------------
-// (d) Escreva funções que permitam obter e actualizar cada dado desta estrutura.
+// (d) Funções que permitem obter/actualizar cada dado da estrutura.
 //-----------------------------------------------------------------------------
 string Automovel::getMatricula(){
 	return matricula;
