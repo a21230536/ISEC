@@ -1,5 +1,4 @@
 // Ficha 2, Exercício 6
-
 #include <iostream>
 #include <sstream>// (c)
 #include <string>
@@ -28,12 +27,12 @@ public:
 	string getOutros();
 
 	// funções para o atribuir/modificar valore
-	void setMatricula(string);
-	void setCombustivel(string);
-	void setMarca(string);
-	void setModelo(string);
-	void setCor(string);
-	void setOutros(string);
+	int setMatricula(string);
+	int setCombustivel(string);
+	int setMarca(string);
+	int setModelo(string);
+	int setCor(string);
+	int setOutros(string);
 
 	// funções para manipular todos os valores
 	void mostra();
@@ -155,9 +154,6 @@ void Automovel::set(string mat, string com, string mar,
 	setOutros(out);
 }
 
-//-----------------------------------------------------------------------------
-// (d) Escreva funções que permitam obter e actualizar cada dado desta estrutura.
-//-----------------------------------------------------------------------------
 string Automovel::getMatricula(){
 	return matricula;
 }
@@ -181,38 +177,51 @@ string Automovel::getCor(){
 string Automovel::getOutros(){
 	return outros;
 }
-void Automovel::setMatricula(string s){
+
+int Automovel::setMatricula(string s){
 	// validar o valor de s aqui (b)
+	if(false) return 0;
 
 	matricula = s;
+	return 1;
 }
 
-void Automovel::setCombustivel(string s){
+int Automovel::setCombustivel(string s){
 	// validar o valor de s aqui (b)
+	if(false) return 0;
 
 	combustivel = s;
+	return 1;
 }
 
-void Automovel::setMarca(string s){
+int Automovel::setMarca(string s){
 	// validar o valor de s aqui (b)
-
+	if(false) return 0;
+	
 	marca = s;
+	return 1;
 }
 
-void Automovel::setModelo(string s){
+int Automovel::setModelo(string s){
 	// validar o valor de s aqui (b)
+	if(false) return 0;
 
 	modelo = s;
+	return 1;
 }
 
-void Automovel::setCor(string s){
+int Automovel::setCor(string s){
 	// validar o valor de s aqui (b)
+	if(false) return 0;
 
 	cor = s;
+	return 1;
 }
 
-void Automovel::setOutros(string s){
+int Automovel::setOutros(string s){
 	// validar o valor de s aqui (b)
+	if(false) return 0;
 
 	outros = s;
+	return 1;
 }
