@@ -37,6 +37,7 @@ public:
 	// funções para manipular todos os valores
 	void mostra();
 	void setPorCin();
+	int setAttr(string);
 
 	// função modifica os valores por argumentos
 	void set(string matricula, string combustivel, string marca,
@@ -81,7 +82,7 @@ Automovel::Automovel(string mat, string com, string mar,
 }
 
 //-----------------------------------------------------------------------------
-// (c) Escrever uma função que permite obter a representação textual dos 
+// (c) Escrever uma função que permite obter a representação textual dos
 //     valores do objecto...
 //-----------------------------------------------------------------------------
 string Automovel::getString(){
@@ -110,33 +111,44 @@ void Automovel::mostra(){
 	     << endl;
 }
 
+int Automovel::setAttr(string attr){
+	string valor;
+	attr[0] = toupper(attr[0]);
+
+	while (true){
+		cout << attr << ": ";
+		getline(cin, valor);
+
+		if(attr == "Matricula")
+			return setMatricula(valor);
+
+		if(attr == "Combustivel")
+			return setCombustivel(valor);
+
+		if(attr == "Marca")
+			return setMarca(valor);
+
+		if(attr == "Modelo")
+			return setModelo(valor);
+
+		if(attr == "Cor")
+			return setCor(valor);
+
+		if(attr == "Outros")
+			return setOutros(valor);
+
+		return 0;
+	}
+}
+
 // modifica as variáveis com valores obtidos pela consola
 void Automovel::setPorCin(){
-	string mat, com, mar, mod, cor, out;
-
-	cout << "Matricula: ";
-	getline(cin, mat);
-	setMatricula(mat);
-
-	cout << "Combustivel: ";
-	getline(cin, com);
-	setCombustivel(com);
-
-	cout << "Marca: ";
-	getline(cin, mar);
-	setMarca(mar);
-
-	cout << "Modelo: ";
-	getline(cin, mod);
-	setModelo(mod);
-
-	cout << "Cor: ";
-	getline(cin, cor);
-	setCor(cor);
-
-	cout << "Outros: ";
-	getline(cin, out);
-	setOutros(out);
+	while(!setAttr("matricula"));
+	while(!setAttr("combustivel"));
+	while(!setAttr("marca"));
+	while(!setAttr("modelo"));
+	while(!setAttr("cor"));
+	while(!setAttr("outros"));
 }
 
 void Automovel::set(string mat, string com, string mar,
@@ -192,7 +204,7 @@ int Automovel::setCombustivel(string s){
 int Automovel::setMarca(string s){
 	// validar o valor de s aqui (b)
 	if(false) return 0;
-	
+
 	marca = s;
 	return 1;
 }
