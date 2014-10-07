@@ -114,31 +114,28 @@ void Automovel::mostra(){
 int Automovel::setAttr(string attr){
 	string valor;
 	attr[0] = toupper(attr[0]);
+	int ok = 0;
 
-	while (true){
+	while (!ok){
 		cout << attr << ": ";
 		getline(cin, valor);
 
 		if(attr == "Matricula")
-			return setMatricula(valor);
-
-		if(attr == "Combustivel")
-			return setCombustivel(valor);
-
-		if(attr == "Marca")
-			return setMarca(valor);
-
-		if(attr == "Modelo")
-			return setModelo(valor);
-
-		if(attr == "Cor")
-			return setCor(valor);
-
-		if(attr == "Outros")
-			return setOutros(valor);
-
-		return 0;
+			ok = setMatricula(valor);
+		else if (attr == "Combustivel")
+			ok = setCombustivel(valor);
+		else if (attr == "Marca")
+			ok = setMarca(valor);
+		else if (attr == "Modelo")
+			ok = setModelo(valor);
+		else if (attr == "Cor")
+			ok = setCor(valor);
+		else if (attr == "Outros")
+			ok = setOutros(valor);
+		else return -1;
 	}
+
+	return ok;
 }
 
 // modifica as variáveis com valores obtidos pela consola
