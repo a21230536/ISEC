@@ -1,7 +1,6 @@
-// ConsoleApplication1.cpp : Defines the entry point for the console application.
-//#include "stdafx.h"// para o Visual Studio
-
 // Ficha 2, Exercício 7
+
+//#include "stdafx.h"// para o Visual Studio
 #include <iostream>
 #include <sstream>// (c)
 #include <string>
@@ -17,7 +16,7 @@ class MSG{
 
 	//-------------------------------------------------------------------------
 	// (i) "Acrescente um construtor privado à classe MSG que recebe como
-	//      parâmetro o seguinte: 'const MSG& z' e lhe dê um corpo vazio
+	//      parâmetro o seguinte: 'const MSG& z' e o corpo vazio
 	// R: Construtor privado fica inaacessível
 	//-------------------------------------------------------------------------
 	//MSG(const MSG& z);
@@ -170,7 +169,7 @@ MSG::MSG(char c){
 	cout << "criado: " << getAsString();
 }
 
-
+// (i) c/ corpo vazio e (j) c/ cout...
 MSG::MSG(const MSG& z){
 	cout << "construido por copia (j)" << endl;
 }
@@ -196,7 +195,7 @@ string MSG::getAsString(){
 	return oss.str();
 }
 
-/* Explicação da profwssora no final da aula (a uma pergunta de um aluno)
+/* Explicação da professora no final da aula (a uma pergunta de um aluno)
 #ifndef MSG_H
 #define MSG_H
 // fazer algo...
