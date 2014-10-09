@@ -1,4 +1,4 @@
-POO
-===
+ISEC
+====
 
-Programação Orientada por Objectos
+Instituto Superior de Engenharia de Coimbra
