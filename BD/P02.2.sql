@@ -1,4 +1,4 @@
--- 2. Mostre o título dos livros Policiais escritos por autores de Coimbra.
+-- 2. Mostrar o título dos livros Policiais escritos por autores de Coimbra.
 SELECT livros.TITULO
 FROM autores, livros
 WHERE livros.GENERO = 'Policial'
