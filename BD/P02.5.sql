@@ -1,4 +1,4 @@
--- 5. Mostre quais os autores que compraram livros na livraria.
+-- 5. Mostrar quais os autores que compraram livros na livraria.
 SELECT DISTINCT autores.NOME
 FROM autores, clientes, vendas
 WHERE vendas.CODIGO_CLIENTE = clientes.CODIGO_CLIENTE
