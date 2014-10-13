@@ -3,4 +3,4 @@
 SELECT codigo_livro, titulo
 FROM livros
 WHERE genero = 'Informática';
--- WHERE LOWER(genero) = 'informática';
+-- ou:  WHERE LOWER(genero) = 'informática';
