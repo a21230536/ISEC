@@ -1,0 +1,15 @@
+-- P02
+-- 7. Supondo que o autor recebe 30% do preço de tabela de cada livro, 
+--    quanto rendeu cada livro ao seu autor?
+SELECT LIVROS.TITULO, 0.3*sum(LIVROS.PRECO_TABELA*VENDAS.QUANTIDADE) "Rendeu"
+FROM VENDAS, LIVROS
+WHERE VENDAS.CODIGO_LIVRO = LIVROS.CODIGO_LIVRO
+GROUP BY LIVROS.TITULO
+ORDER BY LIVROS.TITULO DESC;
+
+/* mostrando os livros que não venderam/renderam:
+SELECT LIVROS.TITULO, NVL(0.3*sum(LIVROS.PRECO_TABELA*VENDAS.QUANTIDADE),0) Rendimento
+FROM VENDAS, LIVROS
+WHERE VENDAS.CODIGO_LIVRO(+) = LIVROS.CODIGO_LIVRO
+GROUP BY LIVROS.TITULO;
+*/
