@@ -3,3 +3,4 @@
 SELECT titulo
 FROM livros
 WHERE genero <> 'Policial';
+-- ou: WHERE genero != 'Policial';
