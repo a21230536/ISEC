@@ -16,7 +16,7 @@ to setup
 end
 
 to Verify
-  ;; pintar patches em redor brancas de preto
+  ;; pintar de preto umas patch branca da vizinhança
   ask turtle 0
   [
     if any? neighbors with [pcolor = white][
