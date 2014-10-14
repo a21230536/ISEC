@@ -35,7 +35,6 @@ to Paint
         ;ask turtle 0 [ set pcolor black ]
    ]
   
-  
   if (Paint_Patches = "Forward")
     [
       ;; coloca a preto a patch em frente do agente
@@ -44,7 +43,6 @@ to Paint
       ]
     ] 
     
-  
   if (Paint_Patches = "Neighbor_4")[
       ;; coloca a preto as patches adjacentes ao agente
       ask turtle 0 [
