@@ -1,4 +1,4 @@
-;; FICHA 3 (Continuação do Exercício 2 da Ficha 2)
+;; FICHA 3 (Continuação do Exercício "Agentes Reactivos" da Ficha 2)
 
 breed[ants ant]
 breed[snails snail]
