@@ -11,6 +11,8 @@
 #define SERV_UDP_PORT 5432
 #define BUFFERSIZE 4096
 
+void Abort(char *msg);
+
 int main( int argc , char *argv[] ){
 	SOCKET sockfd;
 	int iResult, nbytes, sLen = sizeof(struct sockaddr_in);
