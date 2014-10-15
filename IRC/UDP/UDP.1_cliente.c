@@ -18,6 +18,11 @@ int main( int argc , char *argv[] ){
 	SOCKET sockfd;
 	int msg_len, iResult, nbytes;
 	struct sockaddr_in serv_addr;
+
+	/* 3. */
+	struct sockaddr_in local_name;
+	int namelen;
+
 	char buffer[BUFFERSIZE];
 	WSADATA wsaData;
 
@@ -45,6 +50,16 @@ int main( int argc , char *argv[] ){
 	serv_addr.sin_family = AF_INET; /* Address Family: Internet */
 	serv_addr.sin_addr.s_addr = inet_addr(SERV_HOST_ADDR); /* IP no formato "dotted decimal" => 32 bits */
 	serv_addr.sin_port = htons(SERV_UDP_PORT); /* Host TO Netowork Short */
+
+	/* 3. MOSTRA O PORTO LOCAL DO SOCKET */
+	if (bind(sockfd, (SOCKADDR *)&serv_addr, sizeof(serv_addr)) == SOCKET_ERROR) {
+		Abort("Fu*king Bind Error");
+	}
+	namelen = sizeof(local_name);
+	if (getsockname(sockfd, (SOCKADDR *)&local_name, &namelen) == SOCKET_ERROR){
+		Abort("Get Socket Name Error");
+	}
+	printf("Porto Local: %d\n", local_name.sin_port);
 
 	/* ENVIA MENSAGEM AO SERVIDOR */
 	msg_len = strlen(argv[1]);
