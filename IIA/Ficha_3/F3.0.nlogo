@@ -68,6 +68,16 @@ to go
   move-ants
   move-snails
   check-death
+
+  ;; passo 7c
+  if reproduce? [ reproduction ]
+
+  ;; passo 8a
+  regrow-food
+
+  ;; paso 9b
+  display-labels
+
   ;move-snails2
   ;change-traps
   ;mimetism
@@ -228,6 +238,50 @@ to check-death
     if energia <= 0 [ die ]
   ]
 end
+
+;; passo 7d (!a)
+to reproduction
+  ask ants [
+    if energia > birth-energy and random 101 <= reproduction-ants [
+      set energia 0.5 * energia
+      hatch 1 [ jump 5 ]
+    ]
+  ]
+  ask snails [
+    if energia > birth-energy and random 101 <= reproduction-snails [
+      set energia 0.5 * energia
+      hatch 1 [ move-to patch-left-and-ahead 90 1 ]
+    ]
+  ]
+
+end
+
+;; passo 8b
+to regrow-food
+  ask patches [
+    if count patches with [pcolor = green] < 50 [
+      ask patches with [pcolor = black] [
+        if random 101 < 2 [set pcolor green]
+      ]
+    ]
+  ]
+end
+
+;; passo 9c
+to display-labels
+  ;ask turtles [
+  ;  set label ""
+  ;  if show-energy? [
+  ;    set label energia
+  ;  ]
+  ;]
+
+  if show-energy? [
+    ask turtles [
+      set label energia
+    ]
+  ]
+end
 @#$#@#$#@
 GRAPHICS-WINDOW
 430
@@ -257,10 +311,10 @@ ticks
 30.0
 
 BUTTON
-33
-14
-97
-47
+15
+11
+79
+44
 Setup
 setup
 NIL
@@ -274,10 +328,10 @@ NIL
 1
 
 BUTTON
-117
-13
-180
-46
+99
+10
+162
+43
 Go
 go
 T
@@ -291,10 +345,10 @@ NIL
 1
 
 SLIDER
-26
-64
-182
-97
+8
+61
+164
+94
 nants
 nants
 0
@@ -306,10 +360,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-26
-101
-182
-134
+8
+98
+164
+131
 nsnails
 nsnails
 0
@@ -321,10 +375,10 @@ NIL
 HORIZONTAL
 
 MONITOR
-26
-144
-83
-189
+8
+141
+65
+186
 ants
 count ants
 17
@@ -332,10 +386,10 @@ count ants
 11
 
 MONITOR
-84
-144
-144
-189
+66
+141
+126
+186
 snails
 count snails
 17
@@ -362,10 +416,10 @@ PENS
 "snails" 1.0 0 -1184463 true "" "plot count snails"
 
 MONITOR
-83
-195
-145
-240
+65
+192
+127
+237
 traps
 count patches with [pcolor = red]
 17
@@ -373,10 +427,10 @@ count patches with [pcolor = red]
 11
 
 MONITOR
-223
-14
-326
-59
+171
+10
+274
+55
 Ninho azul
 blue-nest
 17
@@ -384,10 +438,10 @@ blue-nest
 11
 
 MONITOR
-223
-61
-326
-106
+171
+57
+274
+102
 Ninho amarelo
 yellow-nest
 17
@@ -395,10 +449,10 @@ yellow-nest
 11
 
 SLIDER
-210
-161
-382
-194
+7
+243
+179
+276
 cap-max
 cap-max
 0
@@ -408,6 +462,73 @@ cap-max
 1
 NIL
 HORIZONTAL
+
+SWITCH
+218
+124
+336
+157
+reproduce?
+reproduce?
+0
+1
+-1000
+
+SLIDER
+216
+159
+388
+192
+reproduction-ants
+reproduction-ants
+0
+100
+50
+1
+1
+NIL
+HORIZONTAL
+
+SLIDER
+215
+195
+387
+228
+reproduction-snails
+reproduction-snails
+0
+100
+50
+1
+1
+NIL
+HORIZONTAL
+
+SLIDER
+215
+232
+387
+265
+birth-energy
+birth-energy
+100
+500
+250
+1
+1
+NIL
+HORIZONTAL
+
+SWITCH
+279
+12
+413
+45
+show-energy?
+show-energy?
+0
+1
+-1000
 
 @#$#@#$#@
 ## WHAT IS IT?
