@@ -72,8 +72,7 @@ to go
   ;change-traps
   ;mimetism
 
-  if count turtles = 0
-  [stop]
+  if count turtles = 0 [stop]
 
   tick
 end
@@ -95,9 +94,9 @@ to move-ants
         ][
           ;; a cor da patch em frente é azul (ninho de formigas)
           ifelse [pcolor] of patch-ahead 1 = blue [
-            fd 1 ;; � frente � ninho, avan�a e desaparece
-            set blue-nest blue-nest + 1
-            ;die ;; passo 1
+            fd 1 ;; avança em frente
+            set blue-nest blue-nest + 1 ;; entra no ninho (+1 no ninho)
+            ;die ;; passo 1 (não fica no ninho...)
           ][
             ;; tem relva na patch em frente e ainda não comeu cap-max patches de relva
             ifelse [pcolor] of patch-ahead 1 = green and n-relva < cap-max [
