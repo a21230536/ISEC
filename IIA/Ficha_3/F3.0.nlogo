@@ -6,7 +6,7 @@ breed[snails snail]
 ;; passo 3
 turtles-own [energia]
 
-;; paso 5
+;; passo 5
 ants-own [n-relva]
 
 globals [blue-nest yellow-nest]
