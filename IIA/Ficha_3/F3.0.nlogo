@@ -75,7 +75,7 @@ to go
   ;; passo 8a
   regrow-food
 
-  ;; paso 9b
+  ;; passo 9b
   display-labels
 
   ;move-snails2
