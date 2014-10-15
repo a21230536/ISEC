@@ -269,13 +269,6 @@ end
 
 ;; passo 9c
 to display-labels
-  ;ask turtles [
-  ;  set label ""
-  ;  if show-energy? [
-  ;    set label energia
-  ;  ]
-  ;]
-
   if show-energy? [
     ask turtles [
       set label energia
