@@ -63,7 +63,7 @@ int main( int argc , char *argv[] ){
 	    Abort("SO nao conseguiu aceitar o datagrama");
 	}
 
-	/* 3. MOSTRA O PORTO LOCAL DO SOCKET */
+	/* 3. MOSTRAR O PORTO LOCAL DO SOCKET */
 	namelen = sizeof(local_name);
 	if (getsockname(sockfd, (SOCKADDR *)&local_name, &namelen) == SOCKET_ERROR){
 	    Abort("Get Socket Name Error");
@@ -80,7 +80,7 @@ int main( int argc , char *argv[] ){
 	buffer[nbytes] = '\0'; /* Afixar a string recebida no buffer com '\0' */
 	printf("<SER1> Mensagem \"%s\" recebida.\n", buffer);
 
-	/* FECHA O SOCKET */
+	/* FECHAR O SOCKET */
 	closesocket(sockfd);
 
 	printf("\n");
