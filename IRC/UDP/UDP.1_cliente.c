@@ -19,66 +19,65 @@ int main( int argc , char *argv[] ){
 	int msg_len, iResult, nbytes;
 	struct sockaddr_in serv_addr;
 
-	/* 3 */
+	/* 3. Variáveis necessárias para o exercício 3 */
 	struct sockaddr_in local_name;
 	int namelen;
 
 	char buffer[BUFFERSIZE];
 	WSADATA wsaData;
 
-	/* TESTA A SINTAXE */
+	/* TESTAR A SINTAXE */
 	if(argc != 2){
-		fprintf(stderr,"Sintaxe: %s frase_a_enviar\n",argv[0]);
-		exit(EXIT_FAILURE);
+	    fprintf(stderr,"Sintaxe: %s frase_a_enviar\n",argv[0]);
+	    exit(EXIT_FAILURE);
 	}
 
-	/* INICIA OS WINSOCKS */
+	/* INICIAR OS WINSOCKS */
 	iResult = WSAStartup(MAKEWORD(2,2), &wsaData);
 	if (iResult != 0) {
-		printf("WSAStartup failed: %d\n", iResult);
-		getchar();
-		exit(1);
+	    printf("WSAStartup failed: %d\n", iResult);
+	    getchar();
+	    exit(1);
 	}
 
-	/* CRIA SOCKET PARA ENVIO/RECEPCAO DE DATAGRAMAS */
+	/* CRIAR SOCKET PARA O ENVIO/RECEPCAO DE DATAGRAMAS */
 	sockfd = socket( PF_INET , SOCK_DGRAM , 0 );
-	if(sockfd == INVALID_SOCKET)
-		Abort("Impossibilidade de criar socket");
+	if(sockfd == INVALID_SOCKET) {
+	    Abort("Impossibilidade de criar socket");	
+	}
 
-	/* PREENCHE ENDERECO DO SERVIDOR */
+	/* PREENCHER O ENDERECO DO SERVIDOR */
 	memset( (char*)&serv_addr , 0, sizeof(serv_addr) ); /* Coloca a zero todos os bytes */
 	serv_addr.sin_family = AF_INET; /* Address Family: Internet */
 	serv_addr.sin_addr.s_addr = inet_addr(SERV_HOST_ADDR); /* IP no formato "dotted decimal" => 32 bits */
 	serv_addr.sin_port = htons(SERV_UDP_PORT); /* Host TO Netowork Short */
 
-	/* sugestão do professor: 3. aqui
+	/* A sugestão do professor para o exercício 3 é neste lugar...
 	if (bind(sockfd, (SOCKADDR *)&serv_addr, sizeof(serv_addr)) == SOCKET_ERROR) {
 		Abort("Bind Error");
 	} */
 
-	/* ENVIA MENSAGEM AO SERVIDOR */
+	/* ENVIAR MENSAGEM AO SERVIDOR */
 	msg_len = strlen(argv[1]);
-
-	if(sendto(sockfd , argv[1], msg_len, 0, (struct sockaddr*)&serv_addr , sizeof(serv_addr)) == SOCKET_ERROR)
-		Abort("SO nao conseguiu aceitar o datagram");
+	if(sendto(sockfd , argv[1], msg_len, 0, (struct sockaddr*)&serv_addr , sizeof(serv_addr)) == SOCKET_ERROR){
+	    Abort("SO nao conseguiu aceitar o datagrama");
+	}
 
 	/* 3. MOSTRA O PORTO LOCAL DO SOCKET */
 	namelen = sizeof(local_name);
 	if (getsockname(sockfd, (SOCKADDR *)&local_name, &namelen) == SOCKET_ERROR){
-	Abort("Get Socket Name Error");
+	    Abort("Get Socket Name Error");
 	}
 	printf("<CLI1> Porto Local {%d}\n", local_name.sin_port);
 
 
 	printf("<CLI1> Mensagem enviada\n<CLI1> A aguadar confirmacao de entrega...\n");
 
-	/* Aguarda mensagem (de confirmação) do servidor */
+	/* 2. RECEBER A MENSAGEM (DE CONFIRMAÇÃO) DO SERVIDOR E MOSTRÁ-LA */
 	if ((nbytes = recvfrom(sockfd, buffer, sizeof(buffer), 0, NULL, NULL)) == SOCKET_ERROR) {
-		Abort("Erro na recepcao de datagrams");
+	    Abort("Erro na recepcao de datagrams");
 	}
-
-	buffer[nbytes] = '\0'; /* Termina a cadeia de caracteres recebidos com '\0' */
-	
+	buffer[nbytes] = '\0'; /* Afixar a string recebida no buffer com '\0' */
 	printf("<SER1> Mensagem \"%s\" recebida.\n", buffer);
 
 	/* FECHA O SOCKET */
