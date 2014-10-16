@@ -67,7 +67,7 @@ int main( int argc , char *argv[] ){
 		/* 1. MOSTRAR A MENSAGEM RECEBIDA */
 		printf("<SER1> Mensagem recebida {%s}\n", buffer);
 
-		/* 4. Informação do cliente */
+		/* 4. MOSTRAR INFORMAÇÃO DO CLIENTE */
 		printf("<SER1> IP Remoto {%s}\n", inet_ntoa(cli_addr.sin_addr));
 		printf("<SER1> Porto Remoto {%d}\n\n", cli_addr.sin_port);
 	}
