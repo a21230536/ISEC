@@ -50,7 +50,7 @@ int main( int argc , char *argv[] ){
 
 	/* PASSA A ATENDER CLIENTES INTERACTIVAMENTE */
 	while(1){
-		fprintf(stderr,"<SER1> Esperando datagram...\n");
+		fprintf(stderr,"<SER1> Esperando um datagrama...\n");
 
 		nbytes = recvfrom(sockfd , buffer , sizeof(buffer) , 0 , (struct sockaddr*)& cli_addr, &sLen);
 		
@@ -64,7 +64,11 @@ int main( int argc , char *argv[] ){
 		buffer[nbytes]='\0'; /* Termina a cadeia de caracteres recebidos com '\0' */
 		
 		/* Mostra a mensagem recebida */
-		printf("<SER1> Mensagem recebida {%s}\n\n", buffer);
+		printf("<SER1> Mensagem recebida {%s}\n", buffer);
+
+		/* 4. Informação do cliente */
+		printf("<SER1> IP Remoto {%s}\n", inet_ntoa(cli_addr.sin_addr));
+		printf("<SER1> Porto Remoto {%d}\n\n", cli_addr.sin_port);
 	}
 }
 
