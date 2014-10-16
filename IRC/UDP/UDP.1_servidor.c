@@ -20,22 +20,23 @@ int main( int argc , char *argv[] ){
 	char buffer[BUFFERSIZE];
 	WSADATA wsaData;
 
+	/* Executar o commando de sistema "cls" para limpar a consola */
 	system("cls");
 
-	/* INICIA OS WINSOCKS */
+	/* INICIAR OS WINSOCKS */
 	iResult = WSAStartup(MAKEWORD(2,2), &wsaData);
 	if (iResult != 0) {
-		printf("WSAStartup failed: %d\n", iResult);
-		getchar();
-		exit(1);
+	    printf("WSAStartup failed: %d\n", iResult);
+	    getchar();
+	    exit(1);
 	}
 
-	/* CRIA O SOCKET PARA RECEPCAO/ENVIO DE DATAGRAMAS UDP */
+	/* CRIAR O SOCKET PARA RECEPCAO/ENVIO DE DATAGRAMAS UDP */
 	if ((sockfd = socket(PF_INET, SOCK_DGRAM, 0)) == INVALID_SOCKET){
-		Abort("Impossibilidade de abrir socket");
+	    Abort("Impossibilidade de abrir socket");
 	}
 
-	/* ASSOCIA O SOCKET AO  ENDERECO DE ESCUTA
+	/* ASSOCIAR O SOCKET AO  ENDERECO DE ESCUTA
 	   Define que pretende receber datagramas vindos de qualquer interface de
 	   rede, no porto pretendido */
 	memset( (char*)&serv_addr , 0, sizeof(serv_addr) );
@@ -43,27 +44,27 @@ int main( int argc , char *argv[] ){
 	serv_addr.sin_addr.s_addr = htonl(INADDR_ANY);  /* Host TO Network Long */
 	serv_addr.sin_port = htons(SERV_UDP_PORT);  /* Host TO Network Short */
 
-	/* Associa o socket ao porto pretendido */
+	/* Associar o socket ao porto pretendido */
 	if (bind(sockfd, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) == SOCKET_ERROR) {
-		Abort("Impossibilidade de registar-se para escuta");
+	    Abort("Impossibilidade de registar-se para escuta");
 	}
 
-	/* PASSA A ATENDER CLIENTES INTERACTIVAMENTE */
+	/* ATENDER OS CLIENTES INTERACTIVAMENTE */
 	while(1){
 		fprintf(stderr,"<SER1> Esperando um datagrama...\n");
 
 		nbytes = recvfrom(sockfd , buffer , sizeof(buffer) , 0 , (struct sockaddr*)& cli_addr, &sLen);
 		
-		/* Envia a mensagem (de volta) ao cliente */
+		/* 2. ENVIAR A MENSAGEM (DE VOLTA) AO CLIENTE */
 		sendto(sockfd, buffer, nbytes, 0, (struct sockaddr*)&cli_addr, sLen);
 
 		if (nbytes == SOCKET_ERROR) {
-			Abort("Erro na recepcao de datagrams");
+		    Abort("Erro na recepcao de datagramas");
 		}
 			
 		buffer[nbytes]='\0'; /* Termina a cadeia de caracteres recebidos com '\0' */
 		
-		/* Mostra a mensagem recebida */
+		/* 1. MOSTRAR A MENSAGEM RECEBIDA */
 		printf("<SER1> Mensagem recebida {%s}\n", buffer);
 
 		/* 4. Informação do cliente */
