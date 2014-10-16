@@ -19,7 +19,7 @@ int main( int argc , char *argv[] ){
 	int msg_len, iResult, nbytes;
 	struct sockaddr_in serv_addr;
 
-	/* 3. */
+	/* 3 */
 	struct sockaddr_in local_name;
 	int namelen;
 
@@ -51,23 +51,26 @@ int main( int argc , char *argv[] ){
 	serv_addr.sin_addr.s_addr = inet_addr(SERV_HOST_ADDR); /* IP no formato "dotted decimal" => 32 bits */
 	serv_addr.sin_port = htons(SERV_UDP_PORT); /* Host TO Netowork Short */
 
-	/* 3. MOSTRA O PORTO LOCAL DO SOCKET */
+	/* sugestão do professor: 3. aqui
 	if (bind(sockfd, (SOCKADDR *)&serv_addr, sizeof(serv_addr)) == SOCKET_ERROR) {
-		Abort("Fu*king Bind Error");
-	}
-	namelen = sizeof(local_name);
-	if (getsockname(sockfd, (SOCKADDR *)&local_name, &namelen) == SOCKET_ERROR){
-		Abort("Get Socket Name Error");
-	}
-	printf("Porto Local: %d\n", local_name.sin_port);
+		Abort("Bind Error");
+	} */
 
 	/* ENVIA MENSAGEM AO SERVIDOR */
 	msg_len = strlen(argv[1]);
 
-	if(sendto( sockfd , argv[1] , msg_len , 0 , (struct sockaddr*)&serv_addr , sizeof(serv_addr) ) == SOCKET_ERROR)
+	if(sendto(sockfd , argv[1], msg_len, 0, (struct sockaddr*)&serv_addr , sizeof(serv_addr)) == SOCKET_ERROR)
 		Abort("SO nao conseguiu aceitar o datagram");
 
-	printf("\n<CLI1> Mensagem enviada\n<CLI1> A aguadar confirmacao de entrega...\n");
+	/* 3. MOSTRA O PORTO LOCAL DO SOCKET */
+	namelen = sizeof(local_name);
+	if (getsockname(sockfd, (SOCKADDR *)&local_name, &namelen) == SOCKET_ERROR){
+	Abort("Get Socket Name Error");
+	}
+	printf("<CLI1> Porto Local {%d}\n", local_name.sin_port);
+
+
+	printf("<CLI1> Mensagem enviada\n<CLI1> A aguadar confirmacao de entrega...\n");
 
 	/* Aguarda mensagem (de confirmação) do servidor */
 	if ((nbytes = recvfrom(sockfd, buffer, sizeof(buffer), 0, NULL, NULL)) == SOCKET_ERROR) {
