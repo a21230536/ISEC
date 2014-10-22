@@ -9,7 +9,7 @@ using namespace std;
 Ponto::Ponto(int a, int b){
 	x = a;
 	y = b;
-	cout << "Ponto criado (" << x << ", " << y << ")" << endl;
+	cout << "Ponto criado (" << x << "," << y << ")" << endl;
 
 	/*/ desenvolvimento não influenciado
 	X(a);
@@ -46,7 +46,7 @@ double Ponto::calcDist(const Ponto& P) const{
 
 string Ponto::getString(){
 	ostringstream textual;
-	textual << "(" << x << ", " << y << ")" << endl;
+	textual << "(" << x << "," << y << ")";
 
 	return textual.str();
 }
