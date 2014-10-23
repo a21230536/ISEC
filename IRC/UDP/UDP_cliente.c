@@ -116,8 +116,8 @@ int main( int argc , char *argv[] ){
 	printf("<CLI1> recepcao da mensagem \"%s\" confirmada\n", buffer);
 
 	/* 5. DETECTAR SE A RESPOSTA VEM DE UM IMPOSTOR
-	      comparar a informação entre as estruturas serv_addr (info do servidor)
-		  e reply_addr (info da ligação de qual se recebeu a resposta) */
+	      comparar a informação entre as estruturas serv_addr (info da ligação com o servidor)
+	      e reply_addr (info da ligação de qual se recebeu a resposta) */
 	if (inet_ntoa(serv_addr.sin_addr) == inet_ntoa(reply_addr.sin_addr)
 			&& serv_addr.sin_port == reply_addr.sin_port)
 		printf("<CLI1> servidor %s:%d >>> OK\n",
