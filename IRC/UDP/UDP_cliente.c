@@ -40,10 +40,10 @@ int main( int argc , char *argv[] ){
 			strcpy(buffer, argv[++i]);/* ++i para copiar/saltar 1 argumento */
 		/* enderesso ip */
 		else if (strcmp("-ip", argv[i]) == 0)
-			serv_udp_port = atoi(argv[++i]);
+			strcpy(serv_host_addr, argv[++i]);
 		/* porto */
 		else if (strcmp("-port", argv[i]) == 0)
-			strcpy(serv_host_addr, argv[++i]);
+			serv_udp_port = atoi(argv[++i]);
 	}
 	/* usar o porto em SERV_UDP_PORT se não foi recebido por argumento */
 	if (!serv_udp_port) serv_udp_port = SERV_UDP_PORT;
