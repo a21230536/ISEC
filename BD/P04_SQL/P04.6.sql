@@ -12,10 +12,10 @@ Tecnologia dos Sistemas Distribuidos 25    23           575          69
 Domine a 110% Word 2000              22    2            44           6
 ...
 Redes Locais em Windows 98 e 95      22    16           352          40
-7 rows selected ...
+
+7 rows selected
 */
-SELECT TITULO,
-	AVG(PRECO_TABELA) AS preco,
+SELECT TITULO, AVG(PRECO_TABELA) AS preco,
 	SUM(QUANTIDADE) AS num_vendidos,
 	SUM(QUANTIDADE)*AVG(PRECO_TABELA) AS rec_esperada,
 	SUM(PRECO_UNITARIO*QUANTIDADE) AS rec_efectiva
