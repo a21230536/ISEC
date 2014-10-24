@@ -25,14 +25,12 @@ int main( int argc , char *argv[] ){
 	struct sockaddr_in local_name, reply_addr;
 	int sockaddr_in_len;
 
-	/* variáveis para o exercício 6 */
+	/* 6. MENSAGEM/IP/PORTO RECEBIDOS POR ARGUMENTO
+	      a sintaxe anterior (argc == 2) continua válida */
 	int serv_udp_port = 0;
 	char serv_host_addr[16] = {'\0'};
 	char sintaxe[] = "-msg <mensagem> [-ip <server_ip> [-port <server_port>]]";
 	int i;
-
-	/* 6. MENSAGEM/IP/PORTO RECEBIDOS POR ARGUMENTO
-	      a sintaxe anterior (2 argumentos) continua válida */
 	if(argc == 2) strcpy(buffer, argv[1]);
 	else for (i = 1; i < argc; i++) {
 		/* mensagem */
