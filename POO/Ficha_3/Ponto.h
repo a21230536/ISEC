@@ -29,22 +29,26 @@ public:
 	double calcDist(const Ponto& P) const;
 
 	string getString();
+	string str(){ return getString(); }
 
-    // Construtor
-	// - só é possivel criar objectos inicializados com as duas coordenadas
-	//Ponto(int, int);
 
 	//-----------------------------------------------------------------------------
 	// (e) novos pontos sem argumentos ficam na posição (0,0)
 	//-----------------------------------------------------------------------------
-	Ponto(int a=0, int b=0);
+	Ponto(int a=0, int b=0);// comentar para satisfazer (b) do exercício 2
 
-	/*/ desenvolvimento não influenciado pelos instrutores (professores)
-	int X() const;
-	void X(int);
+    // Construtor
+	// - só é possivel criar objectos inicializados com as duas coordenadas
+	//Ponto(int, int);// descomentar para satisfazer (b) do exercício 2
+
+	// destrutor
+	~Ponto();
+
+	//TESTE
+	int X() const;// getter
+	void X(int);// setter
 	int Y() const;
 	void Y(int);
-	//*/
 };
 
 #endif

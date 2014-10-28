@@ -7,15 +7,18 @@
 using namespace std;
 
 Ponto::Ponto(int a, int b){
-	x = a;
-	y = b;
-	cout << "Ponto criado (" << x << "," << y << ")" << endl;
+	x = a, y = b;
+	cout << ">>> construindo Ponto " << str() << endl;
 
-	/*/ desenvolvimento não influenciado
+	/*/ TESTE
 	X(a);
 	Y(b);
 	cout << "Ponto(x,y)=(" << X() << "," << Y() << ")" << endl;
 	//*/
+}
+
+Ponto::~Ponto(){
+	cout << ">>> destruindo Ponto " << str() << endl;
 }
 
 int Ponto::getX() const {
@@ -51,7 +54,7 @@ string Ponto::getString(){
 	return textual.str();
 }
 
-/*/ desenvolvimento não influenciado pelos instrutores
+//TESTE
 int Ponto::X() const{
 	return x;
 }
@@ -64,4 +67,3 @@ int Ponto::Y() const{
 void Ponto::Y(int Y){
 	y = Y;
 }
-//*/
