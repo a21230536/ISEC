@@ -6,68 +6,106 @@
 
 using namespace std;
 
-Triangulo::Triangulo(string s, int x1, int y1, int x2, int y2,  int x3, int y3)
-		:nome(s), p1(x1, y1), p2(x2, y2), p3(x3, y3){
+Triangulo::Triangulo(string s, int x0, int y0, int x1, int y1,  int x2, int y2)
+	//-------------------------------------------------------------------------	
+	// (c) mecanismo que permite inicializar objectos com ... os três objectos
+	//-------------------------------------------------------------------------
+	:nome(s), v0(x0, y0), v1(x1, y1), v2(x2, y2) { 
+	//, vertices{ Ponto (x0, y0), Ponto (x1, y1), Ponto (x2, y2) } {
+	
+	//-------------------------------------------------------------------------	
+	// (d) mwcanismo que permite inicializar objectos com ... os três objectos
+	//-------------------------------------------------------------------------
+	cout << ">>> construindo Triangulo " << str() << endl;
 
-	cout << "Triangulo::Triangulo(\"" << s << "\"," << x1 << "," << y1 << ","
-		 << x2 << "," << y2 << "," << x3 << "," << y3 << ")" << endl;
-
-	/*/ d.s.i.
-	pontos[0].X(x1);
-	pontos[0].Y(y1);
-	pontos[1].X(x2);
-	pontos[1].Y(y2);
-	pontos[2].X(x3);
-	pontos[2].Y(y3);
-	//*/
+	// para vertices[]
+	V(0, x0, y0);
+	V(1, x1, y1);
+	V(2, x2, y2);
 }
 
-void Triangulo::setPonto(int x, int y, int n){
+Triangulo::~Triangulo(){
+	//-------------------------------------------------------------------------	
+	// (d) mecanismo que permite inicializar objectos com ... os três objectos
+	//-------------------------------------------------------------------------
+	cout << ">>> destruindo Triangulo" << str() << endl;
+}
+
+// setter
+void Triangulo::vertice(int i, int x, int y){
 	Ponto *p;
 
-	switch (n){
+	switch (i){
+		case 0:
+			p = &v0;
+			break;
 		case 1:
-			p = &p1;
+			p = &v1;
 			break;
 		case 2:
-			p = &p2;
-			break;
-		case 3:
-			p = &p3;
+			p = &v2;
 			break;
 		default:
 			return;
 	}
 
-	p->setX(x);
-	p->setY(y);
-
-	/*/ d.s.i.
-	if(n < 0 || n > 2) return;
-	pontos[n].X(x);
-	pontos[n].X(y);
-	//*/
+	p->X(x);
+	p->Y(y);
 }
 
-Ponto Triangulo::getPonto(int n){
-	switch (n){
-		case 1: return p1;
-		case 2: return p2;
-		case 3: return p3;
-		default: return p1;
+// getter
+Ponto Triangulo::vertice(int i){
+	switch (i){
+		case 0:
+			return v0;
+		case 1:
+			return v1;
+		case 2:
+			return v2;
+		default:
+			return v0;
 	}
-
-	/*/ d.s.i.
-	if(n < 0 || n > 2) return pontos[0];
-	return pontos[n];
-	//*/
 }
 
-string Triangulo::getString(){
+string Triangulo::str(){
 	ostringstream textual;
 
-	textual << "[" << p1.getString() << "," << p2.getString() << ","
-		<< p3.getString() << "]" << endl;
+	textual << nome << "[" 
+		<< v0.str() << ","
+		<< v1.str() << ","
+		<< v2.str() << "]" << endl;
 
 	return textual.str();
+}
+
+int Triangulo::str(string s){
+	nome = s;
+	//nome = string(s);
+
+	if( nome == s) return -1;
+	return 0;
+}
+
+// para vertices[]
+string Triangulo::txt(){
+	ostringstream textual;
+	
+	textual << nome << " [" 
+		<< vertices[0].str() << ","
+		<< vertices[1].str() << ","
+		<< vertices[2].str() << "]" << endl;
+	return textual.str();
+}
+
+// setter/getter para vertices[]
+void Triangulo::V(int i, int x, int y){
+	if (i < 0 || i > 2) return;
+
+	vertices[i].X(x);
+	vertices[i].Y(y);
+}
+Ponto Triangulo::V(int i){
+	if (i != 1 && i != 2) 
+		return vertices[0];
+	return vertices[i];
 }
