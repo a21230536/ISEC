@@ -7,20 +7,31 @@
 using namespace std;
 
 int main(){
-	//-----------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 	// (a) ... testar a class Triangulo
-	//-----------------------------------------------------------------------------
-	// testar o construtor
-	Triangulo q("tri", 1, 2, 3, 4, 5, 6);
-	// testar getString
-	cout << "T" << q.getString();
-	for(int i = 1; i < 4; i++){
-		// testar getPonto
-		cout << "P" << i << q.getPonto(i).getString() << endl;
-		// testar setPonto
-		q.setPonto(10+i, 20+i, i);
+	//-------------------------------------------------------------------------
+	Triangulo q("T1", 0,0, 1,1, 2,2);
+	cout << endl;
+	cout << "> q.str();// => " << q.str();
+	for(int i = 0; i < 3; i++){
+		cout << "> vertice(" << i << ").str();//=> " << q.vertice(i).str() << endl;
+		
+		q.vertice(i, i*10 + 1, i*10 + 2);
 	}
-	cout << "T" << q.getString();
+	cout << "> q.str();// => " << q.str();
+
+	cout << "\n> q.str(\"T2\");" << endl;
+	q.str("T2");
+	cout << "> q.txt();// => " << q.txt();
+	
+	for (int i = 0; i < 3; i++){
+		cout << "> V(" << i << ").str();// => " << q.V(i).str() << endl;
+		cout << "> V(" << i << "," << 100*i + 1 << "," << 100*i + 2 << ");" << endl;
+		q.V(i, i*100 + 1, i*100 + 2);
+	}
+
+	cout << "> q.txt();// => " << q.txt() << endl;
 
 	return 0;
 }
+
