@@ -20,6 +20,9 @@ int main( int argc , char *argv[] ){
 	char buffer[BUFFERSIZE];
 	WSADATA wsaData;
 
+	/* para o exercício 9 */
+	char tam[16];
+
 	/* Executar o commando de sistema "cls" para limpar a consola */
 	system("cls");
 
@@ -55,9 +58,17 @@ int main( int argc , char *argv[] ){
 
 		nbytes = recvfrom(sockfd , buffer , sizeof(buffer) , 0 , (struct sockaddr*)& cli_addr, &sLen);
 		
-		/* 2. ENVIAR A MENSAGEM (DE VOLTA) AO CLIENTE */
-		sendto(sockfd, buffer, nbytes, 0, (struct sockaddr*)&cli_addr, sLen);
+		/*----------------------------------------------------------------------------
+		 * 2. ENVIAR A MENSAGEM (DE VOLTA) AO CLIENTE
+		 * sendto(sockfd, buffer, nbytes, 0, (struct sockaddr*)&cli_addr, sLen);
+		 *--------------------------------------------------------------------------*/
 
+		/*----------------------------------------------------------------------------
+		* 9. resposta do servidor com o tamanho da mensagem em ascii
+		*--------------------------------------------------------------------------*/
+		sprintf(tam, "%d", nbytes);
+		sendto(sockfd, tam, strlen(tam), 0, (struct sockaddr*)&cli_addr, sLen);
+		
 		if (nbytes == SOCKET_ERROR) {
 		    Abort("Erro na recepcao de datagramas");
 		}
