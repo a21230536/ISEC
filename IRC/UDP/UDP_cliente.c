@@ -12,6 +12,9 @@
 #define SERV_UDP_PORT  5432
 #define BUFFERSIZE     4096
 
+/* para o exercício 9 */
+#define TIMEOUT 10
+
 void Abort(char *msg);
 
 int main( int argc , char *argv[] ){
@@ -24,6 +27,12 @@ int main( int argc , char *argv[] ){
 	/* variáveis para o exercício 3 */
 	struct sockaddr_in local_name, reply_addr;
 	int sockaddr_in_len;
+
+	/* para exercício 8 */
+	struct timeval timeout = { TIMEOUT * 1000, 0 };
+
+	/* para o exercício 9 */
+	int mlen;
 
 	/* 6. MENSAGEM/IP/PORTO RECEBIDOS POR ARGUMENTO
 	      a sintaxe anterior (argc == 2) continua válida */
@@ -77,6 +86,10 @@ int main( int argc , char *argv[] ){
 	serv_addr.sin_addr.s_addr = inet_addr(serv_host_addr); /* IP no formato "dotted decimal" => 32 bits */
 	serv_addr.sin_port = htons(serv_udp_port); /* Host TO Netowork Short */
 
+	/* para o exercício 8 */
+	if (setsockopt(sockfd, SOL_SOCKET, SO_RCVTIMEO, &timeout, sizeof(timeout)) == -1)
+		Abort("Impossibilidade de estabelecer timeout!");
+
 	/* A sugestão do professor para o exercício 3 é neste lugar...
 	if (bind(sockfd, (SOCKADDR *)&serv_addr, sizeof(serv_addr)) == SOCKET_ERROR) {
 		Abort("Bind Error");
@@ -101,17 +114,37 @@ int main( int argc , char *argv[] ){
 	/* mostrar enderesso do servidor - porto emissor */
 	printf("<CLI1> servidor %s:%d >>>\n", inet_ntoa(serv_addr.sin_addr), serv_addr.sin_port);
 
-	printf("<CLI1> mensagem enviada\n<CLI1> a aguadar a confirmacao de entrega\n");
+	printf("<CLI1> mensagem enviada\n<CLI1> a aguadar resposta do servidor...\n");
+	
+	/* para o exercício 9 */
+	mlen = strlen(buffer);
 
 	/* 2. RECEBER A MENSAGEM (DE CONFIRMAÇÃO) DO SERVIDOR E MOSTRÁ-LA
 	      informação da ligação que se recebe guardada na estrutura reply_addr */
 	if ((nbytes = recvfrom(sockfd, buffer, sizeof(buffer), 0,
 			(SOCKADDR *)& reply_addr, &sockaddr_in_len)) == SOCKET_ERROR) {
-	    Abort("erro na recepcao de datagramas");
+		/*----------------------------------------------------------------------------
+		 * 8. Alterar o cliente para desistir após TIMEOUT segundos 
+		 *--------------------------------------------------------------------------*/
+		if (WSAGetLastError() == WSAETIMEDOUT){// 10060
+			Abort("timeout...");
+		}
+		else {
+			Abort("erro na leitura (recepcao) de datagramas");
+		}
 	}
 	buffer[nbytes] = '\0'; /* Afixar a string recebida no buffer com '\0' */
 
-	printf("<CLI1> recepcao da mensagem \"%s\" confirmada\n", buffer);
+	/*----------------------------------------------------------------------------
+	* 9. resposta do servidor com o tamanho da mensagem em ascii
+	*--------------------------------------------------------------------------*/
+	printf("<SRV1> %s\n", buffer);
+	if (atoi(buffer) == mlen){
+		puts("<CLI1> tamanho da mensagem OK\n");
+	}
+	else {
+		puts("<CLI1> tamanho da mensagem NAO confirmado\n");
+	}
 
 	/* 5. DETECTAR SE A RESPOSTA VEM DE UM IMPOSTOR
 	      comparar a informação entre as estruturas serv_addr (info da ligação com o servidor)
