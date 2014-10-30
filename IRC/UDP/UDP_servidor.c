@@ -12,6 +12,7 @@ int main( int argc , char *argv[] ){
 	char buffer[BUFFERSIZE];
 	WSADATA wsaData;
 	int noivo = FALSE;
+	char noivo_ip[16] = { '\0' };
 
 	system("cls");
 
@@ -43,9 +44,9 @@ int main( int argc , char *argv[] ){
 	while(1){
 		fprintf(stdout, "<SER> Esperando um%sNoivo\n",
 			(noivo ? " cliente para o ":" "));
-		
+
 		if ((nbytes = recvfrom(sockfd , buffer , sizeof(buffer) , 0,
-				(struct sockaddr*)& cli_addr, &sLen)) == SOCKET_ERROR) {
+				(struct sockaddr*) &cli_addr, &sLen)) == SOCKET_ERROR) {
 			fprintf(stderr, "<SER> ERRO recepcao de datagrama\n");
 		}
 
@@ -62,12 +63,14 @@ int main( int argc , char *argv[] ){
 		/* não existe noivo */
 		if (!noivo) {
 			noivo = TRUE;
+			strcpy(noivo_ip, inet_ntoa(cli_addr.sin_addr));
+			//memcpy(&noivo_addr, &cli_addr, sizeof(cli_addr));
 			noivo_addr = cli_addr;
 			continue;
 		}
 		/* o IP do cliente é o mesmo do noivo */
-		if (strcmp(inet_ntoa(cli_addr.sin_addr), 
-				inet_ntoa(noivo_addr.sin_addr)) == 0){
+		if (strcmp(noivo_ip, inet_ntoa(cli_addr.sin_addr)) == 0){			
+			puts("CLIENTE := NOIVO");
 			continue;
 		}
 		/* enviar noivo ao cliente */
@@ -75,6 +78,11 @@ int main( int argc , char *argv[] ){
 			(struct sockaddr*)&cli_addr, sLen)) == SOCKET_ERROR){
 			fprintf(stderr, "<SER> ERRO envio de noivo\n");
 		}
-		else noivo = FALSE;
+		else{
+			fprintf(stdout, "<CLI> CASAMENTO %s >>> %s\n\n",
+				noivo_ip, inet_ntoa(cli_addr.sin_addr));
+			noivo = FALSE;
+			noivo_ip[0] = '\0';
+		}
 	}
 }
