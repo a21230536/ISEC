@@ -1,8 +1,6 @@
 /* Servidor basico UDP
    Destina-se a mostrar os conteudos dos datagramas recebidos.
-   O porto de escuta encontra-se definido pela constante SERV_UDP_PORT.
-   Assume-se que as mensagens recebida sao cadeias de caracteres (ou seja, 
-   "strings"). */
+   Assume-se que as mensagens recebida sao "strings". */
 #include <stdio.h>
 #include <winsock.h>
 #include "Publico.h"
@@ -10,10 +8,10 @@
 int main( int argc , char *argv[] ){
 	SOCKET sockfd;
 	int iResult, nbytes, sLen = sizeof(struct sockaddr_in);
-	struct sockaddr_in serv_addr, cli_addr;
+	struct sockaddr_in serv_addr, cli_addr, noivo_addr;
 	char buffer[BUFFERSIZE];
 	WSADATA wsaData;
-	Res res;/* para a resposta do servidor */
+	int noivo = FALSE;
 
 	system("cls");
 
@@ -43,11 +41,12 @@ int main( int argc , char *argv[] ){
 
 	/* ATENDER CLIENTES INTERACTIVAMENTE */
 	while(1){
-		fprintf(stdout, "<SER> Esperando um datagrama...\n");
+		fprintf(stdout, "<SER> Esperando um%sNoivo\n",
+			(noivo ? " cliente para o ":" "));
 		
 		if ((nbytes = recvfrom(sockfd , buffer , sizeof(buffer) , 0,
 				(struct sockaddr*)& cli_addr, &sLen)) == SOCKET_ERROR) {
-		    fprintf(stderr, "<SER> ERRO recepcao de datagrama\n");
+			fprintf(stderr, "<SER> ERRO recepcao de datagrama\n");
 		}
 
 		buffer[nbytes] = '\0';
@@ -58,12 +57,24 @@ int main( int argc , char *argv[] ){
 		printf("<SER> Porto do Cliente {%d}\n\n", cli_addr.sin_port);
 
 		/*---------------------------------------------------------------------
-		 * 10. resposta do servidor com o tamanho da mensagem em binário
+		 * 11. casamenteiro
 		 *-------------------------------------------------------------------*/
-		res.nbytes = nbytes;
-		if ((nbytes = sendto(sockfd, &res, sizeof(res), 0,
-				(struct sockaddr*)&cli_addr, sLen)) == SOCKET_ERROR){
-			fprintf(stderr, "<SER> ERRO envio de resposta\n");
+		/* não existe noivo */
+		if (!noivo) {
+			noivo = TRUE;
+			noivo_addr = cli_addr;
+			continue;
 		}
+		/* o IP do cliente é o mesmo do noivo */
+		if (strcmp(inet_ntoa(cli_addr.sin_addr), 
+				inet_ntoa(noivo_addr.sin_addr)) == 0){
+			continue;
+		}
+		/* enviar noivo ao cliente */
+		if ((nbytes = sendto(sockfd, &noivo_addr, sizeof(noivo_addr), 0,
+			(struct sockaddr*)&cli_addr, sLen)) == SOCKET_ERROR){
+			fprintf(stderr, "<SER> ERRO envio de noivo\n");
+		}
+		else noivo = FALSE;
 	}
 }

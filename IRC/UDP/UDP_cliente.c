@@ -1,8 +1,6 @@
 /* Cliente basico UDP
-   Este cliente destina-se a enviar mensagens passadas na linha de comando, sob
-   a forma de um argumento, para um servidor especifico cuja locacao e' dada
-   pelas seguintes constantes: SERV_HOST_ADDR (endereco IP) e SERV_UDP_PORT (porto)
-   O protocolo usado e' o UDP. */
+   Este cliente destina-se a enviar mensagens passadas na linha de comando.
+   As mensagens são nostradas no servidor <SERV_UDP_ADDR>:<SERV_UDP_PORT>. */
 #include <winsock.h>
 #include <stdio.h>
 #include "Publico.h"
@@ -11,13 +9,12 @@ int main( int argc , char *argv[] ){
 	SOCKET sockfd;
 	WSADATA wsaData;
 	int iResult, nbytes;
-	struct sockaddr_in serv_addr, local_name, reply_addr;
+	struct sockaddr_in serv_addr, local_name, reply_addr, noivo_addr;
 	struct timeval timeout = { TIMEOUT * 1000, 0 };/* TIMEOUT em Publico.h */
 	char buffer[BUFFERSIZE] = {'\0'};
 	char serv_host_addr[16] = {'\0'};
 	char sintaxe[] = "-msg <msg> [-ip <server_ip> [-port <server_port>]]";
 	int i, serv_udp_port = 0, sockaddr_in_len = sizeof(struct sockaddr_in);
-	Res res;/* para a resposta do servidor */
 
 	/* MENSAGEM/IP/PORTO RECEBIDOS POR ARGUMENTO */
 	if(argc == 2) strcpy(buffer, argv[1]);
@@ -89,31 +86,32 @@ int main( int argc , char *argv[] ){
 	printf("<CLI> servidor %s:%d >>>\n", inet_ntoa(serv_addr.sin_addr),
 		serv_addr.sin_port);
 
-	printf("<CLI> a aguadar resposta do servidor...\n");
+	printf("<CLI> a aguadar Noivo...\n");
 
 	/*-------------------------------------------------------------------------
-	 * 10. resposta do servidor com o tamanho da mensagem em binário
+	 * 11. casamenteiro
 	 *-----------------------------------------------------------------------*/
-	if ((nbytes = recvfrom(sockfd, &res, sizeof(res), 0,
+	if ((nbytes = recvfrom(sockfd, &noivo_addr, sizeof(noivo_addr), 0,
 			(SOCKADDR *)& reply_addr, &sockaddr_in_len)) == SOCKET_ERROR) {
 		/* WSAETIMEDOUT := 10060 */
-		if (WSAGetLastError() == WSAETIMEDOUT) Abort("TIMEOUT na resposta");
-		else Abort("ERRO leitura (rececao) resposta");
+		if (WSAGetLastError() == WSAETIMEDOUT) {
+			Abort("TIMEOUT ficou Noivo?");
+		}
+		else Abort("ERRO a receber Noivo");
 	}
-	else printf("<SRV> nbytes: %d\n", res.nbytes);
+	else{
+		puts("<CLI> Noivo recebido");
+		printf("<CLI> IP do Noivo {%s}\n", inet_ntoa(noivo_addr.sin_addr));
+		printf("<CLI> Porto do Noivo {%d}\n\n", noivo_addr.sin_port);
+	}
 
-	/* A RESPOSTA VEM DE UM IMPOSTOR? */
-	if (inet_ntoa(serv_addr.sin_addr) == inet_ntoa(reply_addr.sin_addr)
-			&& serv_addr.sin_port == reply_addr.sin_port){
-		printf("<CLI> servidor %s:%d >>> OK\n",
-			inet_ntoa(reply_addr.sin_addr), reply_addr.sin_port);
-	}
-	else {
+	/* SERVIDOR IMPOSTOR */
+	if (!(inet_ntoa(serv_addr.sin_addr) == inet_ntoa(reply_addr.sin_addr)
+			&& serv_addr.sin_port == reply_addr.sin_port)){
 		printf("<CLI> emissor %s:%d >>> IMPOSTOR\n",
 			inet_ntoa(reply_addr.sin_addr), reply_addr.sin_port);
 	}
 
-	/* FECHAR O SOCKET */
 	closesocket(sockfd);
 
 	exit(EXIT_SUCCESS);
