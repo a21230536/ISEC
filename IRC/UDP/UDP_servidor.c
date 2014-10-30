@@ -1,20 +1,22 @@
 /* Servidor basico UDP
-   Destina-se a mostrar os conteudos dos datagramas recebidos.
-   Assume-se que as mensagens recebida sao "strings". */
+Destina-se a mostrar os conteudos dos datagramas recebidos.
+Assume-se que as mensagens recebida sao "strings". */
 #include <stdio.h>
 #include <winsock.h>
-#include "Publico.h"
 
-int main( int argc , char *argv[] ){
+#define SERV_UDP_PORT 5432
+#define BUFFERSIZE 4096
+
+#pragma comment(lib, "ws2_32.lib")
+
+void Abort(char *msg);
+
+int main(int argc, char *argv[]){
 	SOCKET sockfd;
 	int iResult, nbytes, sLen = sizeof(struct sockaddr_in);
-	struct sockaddr_in serv_addr, cli_addr, noivo_addr;
+	struct sockaddr_in serv_addr, cli_addr;
 	char buffer[BUFFERSIZE];
 	WSADATA wsaData;
-	int noivo = FALSE;
-	char noivo_ip[16] = { '\0' };
-
-	system("cls");
 
 	/* INICIAR OS WINSOCKS */
 	if (iResult = WSAStartup(MAKEWORD(2, 2), &wsaData)) {
@@ -27,10 +29,8 @@ int main( int argc , char *argv[] ){
 		Abort("ERRO Impossibilidade de abrir socket");
 	}
 
-	/* ASSOCIAR O SOCKET AO  ENDERECO DE ESCUTA
-	   Define que pretende receber datagramas vindos de qualquer interface de
-	   rede, no porto pretendido */
-	memset( (char*)&serv_addr , 0, sizeof(serv_addr) );
+	/* ASSOCIAR O SOCKET AO  ENDERECO DE ESCUTA */
+	memset((char*)&serv_addr, 0, sizeof(serv_addr));
 	serv_addr.sin_family = AF_INET; /* Address Family: Internet */
 	serv_addr.sin_addr.s_addr = htonl(INADDR_ANY);  /* Host TO Network Long */
 	serv_addr.sin_port = htons(SERV_UDP_PORT);  /* Host TO Network Short */
@@ -41,12 +41,11 @@ int main( int argc , char *argv[] ){
 	}
 
 	/* ATENDER CLIENTES INTERACTIVAMENTE */
-	while(1){
-		fprintf(stdout, "<SER> Esperando um%sNoivo\n",
-			(noivo ? " cliente para o ":" "));
+	while (1){
+		fprintf(stdout, "<SER> Esperando um datagrama...\n");
 
-		if ((nbytes = recvfrom(sockfd , buffer , sizeof(buffer) , 0,
-				(struct sockaddr*) &cli_addr, &sLen)) == SOCKET_ERROR) {
+		if ((nbytes = recvfrom(sockfd, buffer, sizeof(buffer), 0,
+			(struct sockaddr*)& cli_addr, &sLen)) == SOCKET_ERROR) {
 			fprintf(stderr, "<SER> ERRO recepcao de datagrama\n");
 		}
 
@@ -58,31 +57,16 @@ int main( int argc , char *argv[] ){
 		printf("<SER> Porto do Cliente {%d}\n\n", cli_addr.sin_port);
 
 		/*---------------------------------------------------------------------
-		 * 11. casamenteiro
+		 * 10. resposta do servidor com o tamanho da mensagem em binário
 		 *-------------------------------------------------------------------*/
-		/* não existe noivo */
-		if (!noivo) {
-			noivo = TRUE;
-			strcpy(noivo_ip, inet_ntoa(cli_addr.sin_addr));
-			//memcpy(&noivo_addr, &cli_addr, sizeof(cli_addr));
-			noivo_addr = cli_addr;
-			continue;
-		}
-		/* o IP do cliente é o mesmo do noivo */
-		if (strcmp(noivo_ip, inet_ntoa(cli_addr.sin_addr)) == 0){			
-			puts("CLIENTE := NOIVO");
-			continue;
-		}
-		/* enviar noivo ao cliente */
-		if ((nbytes = sendto(sockfd, &noivo_addr, sizeof(noivo_addr), 0,
+		if ((nbytes = sendto(sockfd, &nbytes, sizeof(nbytes), 0,
 			(struct sockaddr*)&cli_addr, sLen)) == SOCKET_ERROR){
-			fprintf(stderr, "<SER> ERRO envio de noivo\n");
-		}
-		else{
-			fprintf(stdout, "<CLI> CASAMENTO %s >>> %s\n\n",
-				noivo_ip, inet_ntoa(cli_addr.sin_addr));
-			noivo = FALSE;
-			noivo_ip[0] = '\0';
+			fprintf(stderr, "<SER> ERRO envio de resposta\n");
 		}
 	}
+}
+
+void Abort(char *msg) {
+	fprintf(stderr, "<CLI1> Erro fatal: <%s> (%d)\n", msg, WSAGetLastError());
+	exit(EXIT_FAILURE);
 }
