@@ -99,8 +99,8 @@ int main(int argc, char *argv[]){
 	printf("<CLI> a aguadar resposta do servidor...\n");
 
 	/*-------------------------------------------------------------------------
-	* 10. resposta do servidor com o tamanho da mensagem em binário
-	*-----------------------------------------------------------------------*/
+	 * 10. resposta do servidor com o tamanho da mensagem em binário
+	 *-----------------------------------------------------------------------*/
 	if ((nbytes = recvfrom(sockfd, &res, sizeof(res), 0,
 		(SOCKADDR *)& reply_addr, &sockaddr_in_len)) == SOCKET_ERROR) {
 		/* WSAETIMEDOUT := 10060 */
