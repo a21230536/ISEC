@@ -3,7 +3,7 @@
 
 #pragma comment(lib, "ws2_32.lib")
 
-void Abort(char *msg) {
-	fprintf(stderr, "<CLI1> Erro fatal: <%s> (%d)\n", msg, WSAGetLastError());
+void die(char *msg) {
+	fprintf(stderr, "<CLI1> ERRO <%s> (%d)\n", msg, WSAGetLastError());
 	exit(EXIT_FAILURE);
 }
