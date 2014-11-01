@@ -9,9 +9,9 @@
 #define FALSE 0
 
 typedef struct _res {
-	char msg[256];
-	int casamento;
-	struct sockaddr_in noivo;
+    char msg[256];
+    int casamento;
+    struct sockaddr_in noivo;
 } RES;
 
 void die(char *msg);
