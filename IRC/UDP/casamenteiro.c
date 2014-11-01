@@ -14,7 +14,7 @@ int main(){
 	struct sockaddr_in server, client;
 
 	/* inicializar o WinSock (especificação 2.2) */
-	if (wsa_result = WSAStartup(MAKEWORD(2, 2), &wsadata)){
+	if (wsa_result = WSAStartup(MAKEWORD(2,2), &wsadata)){
 		sprintf(buffer, "ERRO WSAStartup %d", wsa_result);
 		die(buffer);
 	}
@@ -25,7 +25,6 @@ int main(){
 	}
 
 	/* construir a estrutura do enderesso do servidor */
-	//bzero((char *)&server, sizeof(server));
 	memset((char *)&server, 0, sizeof(server));
 	server.sin_family = AF_INET;
 	server.sin_addr.s_addr = INADDR_ANY;
@@ -57,7 +56,7 @@ int main(){
 		/* noivar o cliente */
 		if (!response.casamento){
 			response.casamento = TRUE;
-			response.noivo = client;//memcpy((char *)&res.noivo, (char *)&from, from_len);
+			response.noivo = client;
 			strcpy(response.msg, "Tem noivo.");
 			strcpy(noivo_ip, inet_ntoa(client.sin_addr));
 			printf("{ %s } >>> NOIVO\n", noivo_ip);
