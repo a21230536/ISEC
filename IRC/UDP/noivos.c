@@ -15,17 +15,14 @@ int main(int argc, char *argv[])
     int wsaresult, salen = sizeof(struct sockaddr_in), i, server_port = 0;
     char buffer[BUFFER_SIZE], server_addr[16];
 
-    /* Sintaxe */
-    if (argc == 1) {
-        printf("Uso: %s -msg <msg> -ip <IP> -port <port>\n", argv[0]);
-        return 1;
-    }
-
-    strcpy(buffer, "Quero casar.");
+    /* mensagem por defeito */
+    sprintf(buffer, "Quero dar o n%c.", 162);
 
     /* argumentos */
-    if (argc == 2) {
-        strcpy(buffer, argv[1]);
+    if (argc < 3) {
+        /* Sintaxe */
+        printf("Uso: %s -msg <msg> -ip <IP> -port <port>\n", argv[0]);
+        return 1;
     }
     else {
         for (i = 1; i < argc; i++) {
