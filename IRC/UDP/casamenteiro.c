@@ -5,7 +5,8 @@
 
 #pragma comment(lib, "ws2_32.lib")
 
-int main(){
+int main()
+{
     SOCKET sock;
     WSADATA wsadata;
     RES response;
@@ -40,12 +41,10 @@ int main(){
 
     /* ciclo de casamentos */
     while (TRUE){
-        printf("\nAguardando um%sNoivo\n",
-            (response.casamento? " cliente para o ": " "));
+        printf("\nAguardando um%sNoivo\n", (response.casamento? " cliente para o ": " "));
 
         /* receber datagrama */
-        if ((len = recvfrom(sock, buffer, sizeof(buffer), 0,
-                (struct sockadder*)&client, &salen)) == SOCKET_ERROR){
+        if ((len = recvfrom(sock, buffer, sizeof(buffer), 0, (struct sockadder*)&client, &salen)) == SOCKET_ERROR){
             perror("ERRO receber datagrama");
         }
 
@@ -53,8 +52,7 @@ int main(){
 
         /* mostrar a mensagem recebida */
         buffer[len] = '\0';
-        printf("MSG{ %s } de %s:%d\n", buffer, inet_ntoa(client.sin_addr),
-            client.sin_port);
+        printf("MSG{ %s } de %s:%d\n", buffer, inet_ntoa(client.sin_addr), client.sin_port);
 
         /* noivar o cliente */
         if (!response.casamento){
@@ -76,15 +74,13 @@ int main(){
         }
 
         /* enviar o noivo ao cliente */
-        if (sendto(sock, &response, sizeof(response), 0,
-                (struct sockaddr *)&client, salen) == SOCKET_ERROR){
+        if (sendto(sock, &response, sizeof(response), 0, (struct sockaddr *)&client, salen) == SOCKET_ERROR){
             perror("ERRO enviar noivo ao cliente");
             continue;
         }
 
         /* casamento concluido no lado do servidor */
-        printf("CASAMENTO!\nnoivo %s enviado ao cliente %s ...\n",
-            noivo_ip, inet_ntoa(client.sin_addr));
+        printf("CASAMENTO!\nnoivo %s enviado ao cliente %s ...\n", noivo_ip, inet_ntoa(client.sin_addr));
 
         /* preparar outro casamento */
         response.casamento = FALSE;

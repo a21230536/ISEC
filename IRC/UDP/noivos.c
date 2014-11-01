@@ -5,7 +5,8 @@
 
 #pragma comment(lib, "ws2_32.lib")
 
-int main(int argc, char *argv[]){
+int main(int argc, char *argv[])
+{
     WSADATA wsadata;
     SOCKET sock;
     RES response;
@@ -46,8 +47,7 @@ int main(int argc, char *argv[]){
     }
 
     /* criar um socket UDP */
-    sock = socket(PF_INET, SOCK_DGRAM, 0);
-    if (sock == INVALID_SOCKET){
+    if ((sock = socket(PF_INET, SOCK_DGRAM, 0)) == INVALID_SOCKET){
         die("Socket Invalido");
     }
 
@@ -58,21 +58,18 @@ int main(int argc, char *argv[]){
     server.sin_port = htons(server_port);
 
     /* configurar o socket para o timeout */
-    if (setsockopt(sock, SOL_SOCKET, SO_RCVTIMEO, &timeout,
-            sizeof(timeout)) == -1){
+    if (setsockopt(sock, SOL_SOCKET, SO_RCVTIMEO, &timeout, sizeof(timeout)) == -1){
         die("Configurar o Socket");
     }
 
     /* usar o socket para enviar a mensagem ao servidor */
-    if (sendto(sock, buffer, strlen(buffer), 0,
-            (struct sockaddr*)&server, sizeof(server)) == SOCKET_ERROR){
+    if (sendto(sock, buffer, strlen(buffer), 0, (SOCKADDR*) &server, sizeof(server)) == SOCKET_ERROR){
         die("Enviar um Datagrama ao Servidor");
     }
 
     /* aguardar resposta do servidor */
     printf("A aguardar resposta do servidor ...\n");
-    if (recvfrom(sock, &response, sizeof(response), 0,
-            (struct sockaddr*)&server, &salen) == SOCKET_ERROR){
+    if (recvfrom(sock, &response, sizeof(response), 0, (SOCKADDR*) &server, &salen) == SOCKET_ERROR){
         /* o erro não foi por timeout */
         if (WSAGetLastError() != WSAETIMEDOUT) {
             die("Receber resposta do Servidor");
@@ -82,17 +79,14 @@ int main(int argc, char *argv[]){
 
         /* reconfigurar o socket para timeout do noivo */
         timeout.tv_sec = 10 * 60 * 1000;
-        if (setsockopt(sock, SOL_SOCKET, SO_RCVTIMEO, &timeout,
-                sizeof(timeout)) == -1){
+        if (setsockopt(sock, SOL_SOCKET, SO_RCVTIMEO, &timeout, sizeof(timeout)) == -1){
             die("Reconfigurar o Socket");
         }
 
         printf("A aguadar noivo ...\n");
 
-        if (recvfrom(sock, &response, sizeof(response), 0,
-                (SOCKADDR*)&noivo, &salen) != SOCKET_ERROR){
-            printf("MSG do Noivo %s:%d { %s }\n",
-                inet_ntoa(noivo.sin_addr), noivo.sin_port, response.msg);
+        if (recvfrom(sock, &response, sizeof(response), 0, (SOCKADDR*) &noivo, &salen) != SOCKET_ERROR){
+            printf("MSG do Noivo %s:%d { %s }\n", inet_ntoa(noivo.sin_addr), noivo.sin_port, response.msg);
             exit(0);
         }
 
@@ -102,14 +96,12 @@ int main(int argc, char *argv[]){
         die("Falha a Receber Noivo");
     }
 
-    printf("MSG do Casamenteiro { %s }\nA contactar o noivo %s:%d ...\n",
-        response.msg, inet_ntoa(response.noivo.sin_addr),
-        response.noivo.sin_port);
+    printf("MSG do Casamenteiro { %s }\nA contactar o noivo %s:%d ...\n", response.msg,
+        inet_ntoa(response.noivo.sin_addr), response.noivo.sin_port);
 
     /* "dar o nó" */
     sprintf(response.msg, "Toma l%c o n%c.", 160, 162);
-    if (sendto(sock, &response, sizeof(response), 0,
-            (SOCKADDR*)&response.noivo, &salen) == SOCKET_ERROR){
+    if (sendto(sock, &response, sizeof(response), 0, (SOCKADDR*) &response.noivo, &salen) == SOCKET_ERROR){
         die("Contactar Noivo");
     }
 
