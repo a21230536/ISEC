@@ -16,24 +16,29 @@ int main(int argc, char *argv[])
     char buffer[BUFFER_SIZE], server_addr[16];
 
     /* Sintaxe */
-    if (argc == 1){
+    if (argc == 1) {
         printf("Uso: %s -msg <msg> -ip <IP> -port <port>\n", argv[0]);
         return 1;
     }
 
-    /* argumentos */
     strcpy(buffer, "Quero casar.");
-    if (argc == 2) strcpy(buffer, argv[1]);
-    else for (i = 1; i < argc; i++) {
-        if (strcmp("-msg", argv[i]) == 0  && strlen(argv[i]) < BUFFER_SIZE){
-            /* ++i para saltar 1 argumento ... */
-            strcpy(buffer, argv[++i]);
-        }
-        else if (strcmp("-ip", argv[i]) == 0 && strlen(argv[i]) < 16){
-            strcpy(server_addr, argv[++i]);
-        }
-        else if (strcmp("-port", argv[i]) == 0){
-            server_port = atoi(argv[++i]);
+
+    /* argumentos */
+    if (argc == 2) {
+        strcpy(buffer, argv[1]);
+    }
+    else {
+        for (i = 1; i < argc; i++) {
+            if (strcmp("-msg", argv[i]) == 0  && strlen(argv[i]) < BUFFER_SIZE) {
+                /* ++i para saltar 1 argumento ... */
+                strcpy(buffer, argv[++i]);
+            }
+            else if (strcmp("-ip", argv[i]) == 0 && strlen(argv[i]) < 16) {
+                strcpy(server_addr, argv[++i]);
+            }
+            else if (strcmp("-port", argv[i]) == 0) {
+                server_port = atoi(argv[++i]);
+            }
         }
     }
 
@@ -47,7 +52,7 @@ int main(int argc, char *argv[])
     }
 
     /* criar um socket UDP */
-    if ((sock = socket(PF_INET, SOCK_DGRAM, 0)) == INVALID_SOCKET){
+    if ((sock = socket(PF_INET, SOCK_DGRAM, 0)) == INVALID_SOCKET) {
         die("Socket Invalido");
     }
 
@@ -58,18 +63,18 @@ int main(int argc, char *argv[])
     server.sin_port = htons(server_port);
 
     /* configurar o socket para o timeout */
-    if (setsockopt(sock, SOL_SOCKET, SO_RCVTIMEO, &timeout, sizeof(timeout)) == -1){
+    if (setsockopt(sock, SOL_SOCKET, SO_RCVTIMEO, &timeout, sizeof(timeout)) == -1) {
         die("Configurar o Socket");
     }
 
     /* usar o socket para enviar a mensagem ao servidor */
-    if (sendto(sock, buffer, strlen(buffer), 0, (SOCKADDR*) &server, sizeof(server)) == SOCKET_ERROR){
+    if (sendto(sock, buffer, strlen(buffer), 0, (SOCKADDR*) &server, sizeof(server)) == SOCKET_ERROR) {
         die("Enviar um Datagrama ao Servidor");
     }
 
     /* aguardar resposta do servidor */
     printf("A aguardar resposta do servidor ...\n");
-    if (recvfrom(sock, &response, sizeof(response), 0, (SOCKADDR*) &server, &salen) == SOCKET_ERROR){
+    if (recvfrom(sock, &response, sizeof(response), 0, (SOCKADDR*) &server, &salen) == SOCKET_ERROR) {
         /* o erro não foi por timeout */
         if (WSAGetLastError() != WSAETIMEDOUT) {
             die("Receber resposta do Servidor");
@@ -79,7 +84,7 @@ int main(int argc, char *argv[])
 
         /* reconfigurar o socket para timeout do noivo */
         timeout.tv_sec = 10 * 60 * 1000;
-        if (setsockopt(sock, SOL_SOCKET, SO_RCVTIMEO, &timeout, sizeof(timeout)) == -1){
+        if (setsockopt(sock, SOL_SOCKET, SO_RCVTIMEO, &timeout, sizeof(timeout)) == -1) {
             die("Reconfigurar o Socket");
         }
 
@@ -90,8 +95,9 @@ int main(int argc, char *argv[])
             exit(0);
         }
 
-        if (WSAGetLastError() == WSAETIMEDOUT)
+        if (WSAGetLastError() == WSAETIMEDOUT) {
             die("TIMEOUT a Esperar o Noivo");
+        }
 
         die("Falha a Receber Noivo");
     }
@@ -101,7 +107,7 @@ int main(int argc, char *argv[])
 
     /* "dar o nó" */
     sprintf(response.msg, "Toma l%c o n%c.", 160, 162);
-    if (sendto(sock, &response, sizeof(response), 0, (SOCKADDR*) &response.noivo, &salen) == SOCKET_ERROR){
+    if (sendto(sock, &response, sizeof(response), 0, (SOCKADDR*) &response.noivo, &salen) == SOCKET_ERROR) {
         die("Contactar Noivo");
     }
 

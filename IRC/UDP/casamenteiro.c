@@ -15,13 +15,13 @@ int main()
     struct sockaddr_in server, client;
 
     /* inicializar o WinSock (especificação 2.2) */
-    if (wsa_result = WSAStartup(MAKEWORD(2,2), &wsadata)){
+    if (wsa_result = WSAStartup(MAKEWORD(2,2), &wsadata)) {
         sprintf(buffer, "ERRO WSAStartup %d", wsa_result);
         die(buffer);
     }
 
     /* criar um socket UDP da família Internet Protocol Family */
-    if ((sock = socket(PF_INET, SOCK_DGRAM, 0)) == INVALID_SOCKET){
+    if ((sock = socket(PF_INET, SOCK_DGRAM, 0)) == INVALID_SOCKET) {
         die("Criar o Socket");
     }
 
@@ -32,7 +32,7 @@ int main()
     server.sin_port = htons(SERVER_PORT);
 
     /* ligar-se ao socket */
-    if (bind(sock, (struct sockaddr*)&server, sizeof(server)) == SOCKET_ERROR){
+    if (bind(sock, (struct sockaddr*)&server, sizeof(server)) == SOCKET_ERROR) {
         die("Ligar ao Socket");
     }
 
@@ -40,11 +40,11 @@ int main()
     response.casamento = FALSE;
 
     /* ciclo de casamentos */
-    while (TRUE){
+    while (TRUE) {
         printf("\nAguardando um%sNoivo\n", (response.casamento? " cliente para o ": " "));
 
         /* receber datagrama */
-        if ((len = recvfrom(sock, buffer, sizeof(buffer), 0, (struct sockadder*)&client, &salen)) == SOCKET_ERROR){
+        if ((len = recvfrom(sock, buffer, sizeof(buffer), 0, (SOCKADDR *) &client, &salen)) == SOCKET_ERROR) {
             perror("ERRO receber datagrama");
         }
 
@@ -55,7 +55,7 @@ int main()
         printf("MSG{ %s } de %s:%d\n", buffer, inet_ntoa(client.sin_addr), client.sin_port);
 
         /* noivar o cliente */
-        if (!response.casamento){
+        if (!response.casamento) {
             response.casamento = TRUE;
             response.noivo = client;
             strcpy(response.msg, "Tem noivo.");
@@ -68,13 +68,13 @@ int main()
         }
 
         /* comparar o enderesso do cliente com o do noivo */
-        if (strcmp(noivo_ip, inet_ntoa(client.sin_addr)) == 0){
+        if (strcmp(noivo_ip, inet_ntoa(client.sin_addr)) == 0) {
             printf("incesto nao %c permitido!\n", 130);
             continue;
         }
 
         /* enviar o noivo ao cliente */
-        if (sendto(sock, &response, sizeof(response), 0, (struct sockaddr *)&client, salen) == SOCKET_ERROR){
+        if (sendto(sock, &response, sizeof(response), 0, (SOCKADDR *)&client, salen) == SOCKET_ERROR) {
             perror("ERRO enviar noivo ao cliente");
             continue;
         }

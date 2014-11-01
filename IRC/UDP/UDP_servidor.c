@@ -27,7 +27,7 @@ int main(int argc, char *argv[])
 
     /* CRIAR O SOCKET PARA RECEPCAO/ENVIO DE DATAGRAMAS UDP */
     if ((sockfd = socket(PF_INET, SOCK_DGRAM, 0)) == INVALID_SOCKET) {
-        Abort("ERRO Impossibilidade de abrir socket");
+        Abort("impossibilidade de abrir socket");
     }
 
     /* ASSOCIAR O SOCKET AO  ENDERECO DE ESCUTA */
@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
 
     /* Associar o socket ao porto pretendido */
     if (bind(sockfd, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) == SOCKET_ERROR) {
-        Abort("ERRO Impossibilidade de registar-se para escuta");
+        Abort("impossibilidade de registar-se para escuta");
     }
 
     /* ATENDER CLIENTES INTERACTIVAMENTE */
