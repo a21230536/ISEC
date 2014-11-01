@@ -5,11 +5,7 @@
 
 #pragma comment(lib, "ws2_32.lib")
 
-void die(char *msg)
-{
-    fprintf(stderr, "ERRO <%s> (%d)\n", msg, WSAGetLastError());
-    exit(-1);
-}
+void die(char *);
 
 main(int argc, char *argv[])
 {
@@ -74,4 +70,10 @@ main(int argc, char *argv[])
     }
 
     printf("> n%c concluido\n", 162);
+}
+
+void die(char *msg)
+{
+    fprintf(stderr, "ERRO <%s> (%d)\n", msg, WSAGetLastError());
+    exit(-1);
 }
