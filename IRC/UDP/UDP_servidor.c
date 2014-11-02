@@ -54,7 +54,7 @@ int main(int argc, char *argv[])
         /* INFO DA MENSAGEM RECEBIDA */
         printf("<SER> Mensagem recebida {%s}\n", buffer);
         printf("<SER> IP do Cliente {%s}\n", inet_ntoa(cli_addr.sin_addr));
-        printf("<SER> Porto do Cliente {%d}\n\n", cli_addr.sin_port);
+        printf("<SER> Porto do Cliente {%d}\n\n", ntohs(cli_addr.sin_port));
 
         /*---------------------------------------------------------------------
          * 10. resposta do servidor com o tamanho da mensagem em binário

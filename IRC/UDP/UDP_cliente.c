@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
     struct sockaddr_in serv_addr, local_name, reply_addr;
     struct timeval timeout = { TIMEOUT * 1000, 0 };/* TIMEOUT em Publico.h */
     char buffer[BUFFERSIZE] = {'\0'}, serv_host_addr[16] = {'\0'};
-    char sintaxe[] = "-msg <msg> [-ip <server_ip> [-port <server_port>]]";
+    char sintaxe[] = "-msg <msg> [-ip <server_ip> [-port <server_port>]]", verify[2][32];
 
     /* MENSAGEM/IP/PORTO RECEBIDOS POR ARGUMENTO */
     if (argc == 2) {
@@ -93,12 +93,11 @@ int main(int argc, char *argv[])
 
     /* INFO DO CLIENTE E SERVIDOR */
     sockaddr_in_len = sizeof(local_name);
-    if (getsockname(sockfd, (SOCKADDR *)&local_name, &sockaddr_in_len) == SOCKET_ERROR) {
+    if (getsockname(sockfd, (SOCKADDR *) &local_name, &sockaddr_in_len) == SOCKET_ERROR) {
         Abort("Get Socket Name Error");
     }
-    printf("<CLI> cliente %s:%d >>>\n", inet_ntoa(local_name.sin_addr), local_name.sin_port);
-    printf("<CLI> servidor %s:%d <<<\n", serv_host_addr, serv_udp_port);
-    printf("<CLI> servidor %s:%d >>>\n", inet_ntoa(serv_addr.sin_addr), serv_addr.sin_port);
+    printf("<CLI> cliente %s:%d\n", serv_host_addr, serv_udp_port);
+    printf("<CLI> servidor %s:%d\n", inet_ntoa(serv_addr.sin_addr), ntohs(serv_addr.sin_port));
 
     printf("<CLI> a aguadar resposta do servidor...\n");
 
@@ -118,11 +117,10 @@ int main(int argc, char *argv[])
     }
 
     /* A RESPOSTA VEM DE UM IMPOSTOR? */
-    if (inet_ntoa(serv_addr.sin_addr) == inet_ntoa(reply_addr.sin_addr) && serv_addr.sin_port == reply_addr.sin_port) {
-        printf("<CLI> servidor %s:%d >>> OK\n", inet_ntoa(reply_addr.sin_addr), reply_addr.sin_port);
-    }
-    else {
-        printf("<CLI> emissor %s:%d >>> IMPOSTOR\n", inet_ntoa(reply_addr.sin_addr), reply_addr.sin_port);
+    sprintf(verify[0], "%s:%d", inet_ntoa(serv_addr.sin_addr), ntohs(serv_addr.sin_port));
+    sprintf(verify[1], "%s:%d", inet_ntoa(reply_addr.sin_addr), ntohs(reply_addr.sin_port));
+    if (!strcmp(verify[0], verify[1])) {
+        printf("<CLI> servidor %s IMPOSTOR\n", verify[1]);
     }
 
     /* FECHAR O SOCKET */
