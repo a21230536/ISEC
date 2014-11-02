@@ -18,32 +18,32 @@ main()
     int len, wsa_result, sa_len = sizeof(struct sockaddr_in);
     char buffer[BUFFER_SIZE];
 
-    /* Iniciar o WinSock */
+    /* iniciar o WinSock */
     if (wsa_result = WSAStartup(MAKEWORD(2,2), &wsa_data)) {
         die("Iniciar o WinSock");
     }
 
-    /* Criar um Socket */
+    /* criar um Socket */
     if ((sock = socket(PF_INET, SOCK_DGRAM, 0)) == INVALID_SOCKET) {
         die("Criar o Socket");
     }
 
-    /* Construir o Endereço do Servidor */
+    /* construir o endereço do Servidor */
     memset((char *) &servidor, 0, sizeof(servidor));
     servidor.sin_family = AF_INET;
     servidor.sin_addr.s_addr = htonl(INADDR_ANY);
     servidor.sin_port = htons(SERVER_PORT);
 
-    /* Vincular o Enderço ao Socket */
+    /* vincular o enderço ao Socket */
     if (bind(sock, (SOCKADDR*)&servidor, sizeof(servidor)) == SOCKET_ERROR) {
         die("Vincular ao Socket");
     }
 
-    /* Ciclo para Juntar Pares */
+    /* ciclo de juntar pares */
     while (1) {
         puts("> novo par");
 
-        /* Receber Datagrama do Primeiro Cliente */
+        /* receber datagrama do primeiro cliente (A) */
         if (recvfrom(sock, buffer, sizeof(buffer), 0, (SOCKADDR*) &cliente1, &sa_len) == SOCKET_ERROR) {
             perror("> ERRO [%d] Receber do Primeiro Cliente\n", WSAGetLastError());
             continue;
@@ -51,7 +51,7 @@ main()
         
         printf("> cliente 1 (%s:%d)\n", inet_ntoa(cliente1.sin_addr), ntohs(cliente1.sin_port));
 
-        /* Receber Datagrama Segundo Cliente */
+        /* receber datagrama segundo cliente (B) */
         if (recvfrom(sock, buffer, sizeof(buffer), 0, (SOCKADDR*)&cliente2, &sa_len) == SOCKET_ERROR) {
             perror("ERRO [%d] Receber do Segundo Cliente\n", WSAGetLastError());
             continue;
@@ -59,7 +59,7 @@ main()
         
         printf("> cliente 2 (%s:%d)\n", inet_ntoa(cliente2.sin_addr), ntohs(cliente2.sin_port));
 
-        /* Enviar o Endereço do Primeiro Cliente ao Segundo */
+        /* enviar o endereço do cliente A ao cliente B */
         if (sendto(sock, &cliente1, sa_len, 0, (SOCKADDR*) &cliente2, sa_len) == SOCKET_ERROR) {
             perror("ERRO [%d] Enviar ao Segundo Cliente\n", WSAGetLastError());
             continue;

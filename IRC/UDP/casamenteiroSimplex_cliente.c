@@ -20,41 +20,40 @@ main(int argc, char *argv[])
         exit(1);
     }
 
-    /* Inicializar WinSock */
+    /* inicializar o WinSock */
     if (wsa_result = WSAStartup(MAKEWORD(2, 2), &wsa_data)) {
         sprintf(msg, "Falha <%d> a Inicializar WinSock", wsa_result);
         die(msg);
     }
 
-    /* Criar Socket */
+    /* criar um Socket */
     if ((sock = socket(PF_INET, SOCK_DGRAM, 0)) == INVALID_SOCKET) {
         die("Falha a Criar Socket");
     }
 
-    /* Contruir Estrutura de Endereço (do Servidor) */
+    /* contruir o endereço do Servidor */
     memset((char *)&servidor, 0, sizeof(servidor));
     servidor.sin_family = AF_INET;
     servidor.sin_addr.s_addr = inet_addr(argv[2]);
     servidor.sin_port = htons(atoi(argv[3]));
 
-    /* Enviar Mensagem ao Servidor */
+    /* enviar um datagrama ao Servidor */
     if (sendto(sock, argv[1], strlen(argv[1]), 0, (SOCKADDR*)&servidor, sa_len) == SOCKET_ERROR) {
         die("Falha a Enviar Mensagem ao Servidor");
     }
 
-    /* Receber a Estrutura de Endereço do Socket */
+    /* receber um datagrama (estrutura sockaddr_in) */
     puts("> esperando o meu par");
     if (recvfrom(sock, &par, sa_len, 0, (SOCKADDR*)&remetente, &sa_len) == SOCKET_ERROR) {
         die("Falha a Receber Mensagem");
     }
 
-    /* Verificar de quem se recebeu a Estrutura */
+    /* verificar de quem se recebeu o datagrama */
     if (strcmp(argv[2], inet_ntoa(remetente.sin_addr)) == 0 && atoi(argv[3]) == ntohs(remetente.sin_port)) {
-        /* Mensagem Recebida do Servidor */
-        printf("> o meu par - %s:%d\n", inet_ntoa(par.sin_addr), ntohs(par.sin_port));
-        
-        /* Encaminhar a estrutura ao Par */
+        /* o datagrama (endereço do cliente A) veio do servidor */
+        printf("> o meu par (cliente 1) - %s:%d\n", inet_ntoa(par.sin_addr), ntohs(par.sin_port));
         puts("> a contactar o meu par ...");
+        /* enviar (encaminhar) o datagrama ao cliente A */
         if (sendto(sock, &par, sa_len, 0, (SOCKADDR*)&par, sa_len) == SOCKET_ERROR) {
             die("Falha a Enviar Mensagem ao Par");
         }
@@ -62,10 +61,8 @@ main(int argc, char *argv[])
         printf(">\n> n%c dado\n", 162);
     }
     else {
-        /* Mensagenm Recebida do Par */
-        printf("> o meu par - %s:%d\n", inet_ntoa(remetente.sin_addr), ntohs(remetente.sin_port));
-        printf("> o meu Endereco - %s:%d\n", inet_ntoa(par.sin_addr), ntohs(par.sin_port));
-
+        /* o datagrama veio do cliente B */
+        printf("> o meu par (cliente 2) - %s:%d\n", inet_ntoa(remetente.sin_addr), ntohs(remetente.sin_port));
         printf(">\n> n%c recebido\n", 162);
     }
 
