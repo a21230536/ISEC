@@ -68,7 +68,7 @@ int main()
 
         /* comparar o endereço do cliente com o do noivo */
         strcpy(addrs[1], inet_ntoa(cliente.sin_addr));
-        if ((len = strcmp(addrs[0], addrs[1])) == 0) {
+        if (!strcmp(addrs[0], addrs[1])) {
             response.casamento = FALSE;
             sprintf(response.msg, "incesto nao %c permitido!", 130);
             printf("> %s\n", response.msg);
@@ -81,8 +81,6 @@ int main()
             response.casamento = TRUE;
             continue;
         }
-
-        printf("len=%d | 0:%s 1:%s\n", len, addrs[0], addrs[1]);
 
         /* enviar o noivo ao cliente */
         if (sendto(sock, &response, sizeof(response), 0, (SOCKADDR *) &cliente, salen) == SOCKET_ERROR) {
