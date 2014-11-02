@@ -1,4 +1,4 @@
-/* CASAMENTEIRO SERVIDOR - SIMPLEX */
+/* CASAMENTEIRO SERVIDOR - SIMPLES */
 #include <stdio.h>
 #include <winsock.h>
 #include <string.h>
