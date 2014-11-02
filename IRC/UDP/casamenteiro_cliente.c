@@ -14,7 +14,7 @@ int main(int argc, char *argv[])
     struct timeval timeout = { TIMEOUT * 1000 * 60, 0 };
     struct sockaddr_in server, from;
     int wsaresult, salen = sizeof(struct sockaddr_in), i, server_port = 0;
-    char msg[256] = {'\0'}, server_addr[16];
+    char msg[256] = {'\0'}, server_addr[16], from_addr[16];
 
     /* argumentos */
     if (argc < 3) {
@@ -46,18 +46,18 @@ int main(int argc, char *argv[])
         die(msg);
     }
 
-    /* criar um socket UDP */
+    /* criar um socket */
     if ((sock = socket(PF_INET, SOCK_DGRAM, 0)) == INVALID_SOCKET) {
         die("Socket Invalido");
     }
 
-    /* construir a estrutura de endereço do servidor */
+    /* construir o endereço do servidor */
     memset((char *) &server, 0, sizeof(server));
     server.sin_family = PF_INET;
     server.sin_addr.s_addr = inet_addr(server_addr);
     server.sin_port = htons(server_port);
 
-    /* configurar o socket para o timeout */
+    /* configurar o socket para timeout */
     if (setsockopt(sock, SOL_SOCKET, SO_RCVTIMEO, &timeout, sizeof(timeout)) == -1) {
         die("Configurar o Socket");
     }
@@ -67,7 +67,7 @@ int main(int argc, char *argv[])
         die("Enviar um Datagrama ao Servidor");
     }
 
-    /* receber datagrama de ?... */
+    /* receber datagrama de ...? */
     printf("> a aguardar datagrama ...\n");
     if (recvfrom(sock, &response, sizeof(response), 0, (SOCKADDR*) &from, &salen) == SOCKET_ERROR) {
         if (WSAGetLastError() == WSAETIMEDOUT) {
@@ -86,12 +86,12 @@ int main(int argc, char *argv[])
     printf("> CASAMENTO: %d\n", response.casamento);
     printf("> NOIVO: %s:%d\n", inet_ntoa(response.noivo.sin_addr), ntohs(response.noivo.sin_port));
     
-    /* verificar se o datagrama vem do servidor */
-    strcpy(msg, inet_ntoa(from.sin_addr));
-    if (strcmp(server_addr, msg) == 0 && server_port == ntohs(from.sin_port)) {
+    /* verificar se o datagrama veio do servidor */
+    strcpy(from_addr, inet_ntoa(from.sin_addr));
+    if (strcmp(server_addr, from_addr) == 0 && server_port == ntohs(from.sin_port)) {
         printf("> a dar o n%c ...\n", 162);
         
-        /* enviar datagrama ao noivo */
+        /* enviar o datagrama ao noivo */
         sprintf(response.msg, "toma l%c o n%c", 160, 162);
         if (sendto(sock, &response, sizeof(response), 0, (SOCKADDR*)&response.noivo, &salen) == SOCKET_ERROR) {
             die("contactar o noivo");
