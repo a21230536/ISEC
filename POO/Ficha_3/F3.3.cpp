@@ -11,19 +11,58 @@ using namespace std;
 // Se o ponto descreve a posição desse rectângulo no plano, então o Ponto deve pertencer exclusivamente ao Rectangulo;
 // se o ponto depender de uma fonte externa, então o Ponto não deve pertencer diretamente ao Rectangulo.
 
+void testRectangulo(Rectangulo &, char s[]="a");
+void linha(int n = 80, char c = '-');
+
 int main()
 {
-    Ponto O(0, 10);
-    Rectangulo A(&O, 2, 3);
-    Rectangulo B(20, 30, 40, 41);
-    //const Rectangulo C();
+    Ponto P;
+    Rectangulo A(&P, 72, 73);// II
+    Rectangulo B(60,61,62,63);// I
+    Rectangulo C(Ponto(80, 81), 82, 83);// III (CENÁRIO DO ENUNCIADO)
 
-    A.O.X(7);
-    A.O.Y(8);
+    //-----------------------------------------------------------------------------------------------------------------
+    // (b) Um objecto ponto p1 nas coordenadas (1,2) e dois rectângulos a e b quaisquer que partilham o mesmo ponto ...
+    //     Apresentar os dados de todos os objectos no ecrã.
+    //-----------------------------------------------------------------------------------------------------------------
+    Ponto p1(1, 2);
+    Rectangulo a(p1, 4, 5);
+    Rectangulo b(p1, 6, 7);
+    linha();
+    cout << "> p1.str();// " << p1.str() << endl;
+    linha();
+    testRectangulo(a);
+    linha();
+    testRectangulo(b, "b");
 
-    O.X(9);
-    O.Y(10);
+    //-----------------------------------------------------------------------------------------------------------------
+    // (c) Modificar as coordenadas do ponto do rectângulo a para (4, 5) ...
+    //-----------------------------------------------------------------------------------------------------------------
+    linha();
+    cout << "> a.P.X(4);" << endl;
+    a.P.X(4);
+    cout << "> a.P.Y(5);" << endl;
+    a.P.Y(5);
+    linha();
+    testRectangulo(a);
+    linha();
+    testRectangulo(b, "b");
+    linha();
 
-    cout << "> A.area();// => " << A.area() << endl;
-    cout << "> B.area();// => " << B.area() << endl;
+    return 0;
+}
+
+void testRectangulo(Rectangulo &a, char s[])
+{
+    cout << "> " << s << ".P.str();// " << a.P.str() << endl;
+    cout << "> " << s << ".largura();// " << a.largura() << endl;
+    cout << "> " << s << ".altura();// " << a.altura() << endl;
+    cout << "> " << s << ".area();// " << a.area() << endl;
+    cout << "> " << s << ".perimetro();// " << a.perimetro() << endl;
+}
+
+void linha(int n, char c)
+{
+    for (int i = 0; i < n; i++) cout << c;
+    //cout << endl;
 }
