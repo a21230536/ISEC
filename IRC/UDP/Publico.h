@@ -14,6 +14,10 @@ typedef struct _res {
     struct sockaddr_in noivo;
 } RES;
 
-void die(char *msg);
+void die(char *);
+void sair(char *);
+char *erro(char *);
+void falha(char *);
+void supper(char *);
 
 #endif
