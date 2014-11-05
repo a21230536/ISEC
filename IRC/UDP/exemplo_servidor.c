@@ -5,18 +5,19 @@
 #include <string.h>
 #include "publico.h"
 
+/* ligação à livraria ws2_32.lib */
 #pragma comment(lib, "ws2_32.lib")
 
 main()
 {
     SOCKET sock;
-    WSADATA wsa_data;
+    WSADATA wsadata;
     struct sockaddr_in servidor, cliente;
     int wsaresult, len, size = sizeof(struct sockaddr_in);
     char msg[256];
 
     /* iniciar o WinSock */
-    if (wsaresult = WSAStartup(MAKEWORD(2, 2), &wsa_data)) {
+    if (wsaresult = WSAStartup(MAKEWORD(2, 2), &wsadata)) {
         sprintf(msg, "falha ao iniciar o WinSock (%d)", wsaresult);
         sai(msg);
     }

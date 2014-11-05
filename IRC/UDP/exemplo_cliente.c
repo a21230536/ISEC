@@ -4,6 +4,7 @@
 #include <string.h>
 #include "publico.h"
 
+/* ligação à livraria ws2_32.lib */
 #pragma comment(lib, "ws2_32.lib")
 
 main(int argc, char *argv[])
@@ -14,7 +15,7 @@ main(int argc, char *argv[])
     char msg[256];
     int wsaresult, len, size, timeout = TIMEOUT*1000;
 
-    /* iniciar WinSock */
+    /* iniciar o WinSock */
     if (WSAStartup(MAKEWORD(2, 2), &wsadata)) {
         sprintf(msg, "falha ao iniciar o WinSock (%d)", wsaresult);
         sai(msg);

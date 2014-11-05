@@ -36,8 +36,7 @@ char *erro(char *msg)
 
 void falha(char *s)
 {
-    char wsaerr[32];
-    char msg[256];
+    char wsaerr[32], msg[256];
 
     erro(wsaerr);
     sprintf(msg, "FALHA <%s> %s", s, wsaerr);
