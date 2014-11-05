@@ -13,12 +13,13 @@ main(int argc, char *argv[])
     WSADATA wsadata;
     SOCKADDR_IN servidor, remetente;
     char msg[256];
-    int len, size;
+	int wsaresult, len, size;
 
     /* iniciar WinSock */
-    if (WSAStartup(MAKEWORD(2, 2), &wsadata)) {
-        sair("falha ao iniciar o WinSock");
-    }
+	if (WSAStartup(MAKEWORD(2, 2), &wsadata)) {
+		sprintf(msg, "falha ao iniciar o WinSock (%d)", wsaresult);
+		sai(msg);
+	}
 
     /* construir o endereço do servidor */
     memset((char *)&servidor, 0, sizeof(servidor));
@@ -27,30 +28,22 @@ main(int argc, char *argv[])
     servidor.sin_family = AF_INET;
 
     /* criar um Socket */
-    if ((sock = socket(PF_INET, SOCK_DGRAM, 0)) == INVALID_SOCKET) {
-        falha("socket");
-    }
+    if ((sock = socket(PF_INET, SOCK_DGRAM, 0)) == INVALID_SOCKET) falha("socket");
 
     /* mensagem */
     printf("> MSG: ");
     gets(msg);
 
     /* enviar a mensagem ao servidor */
-    if (sendto(sock, msg, strlen(msg), 0, (SOCKADDR *)&servidor, sizeof(servidor)) == SOCKET_ERROR) {
-        falha("sendto");
-    }
+    if (sendto(sock, msg, strlen(msg), 0, (SOCKADDR *)&servidor, sizeof(servidor)) == SOCKET_ERROR) falha("sendto");
 
     /* receber mensagem do servidor */
     size = sizeof(SOCKADDR_IN);
-    if ((len = recvfrom(sock, msg, sizeof(msg), 0, (SOCKADDR *)&remetente, &size)) == SOCKET_ERROR) {
-        falha("recvfrom");
-    }
-
-    msg[len] = '\0';
+    if ((len = recvfrom(sock, msg, sizeof(msg), 0, (SOCKADDR *)&remetente, &size)) == SOCKET_ERROR) falha("recvfrom");
 
     /* mostrar a mensagem recebida */
-    printf("> MSG FROM %s:%d\n", inet_ntoa(remetente.sin_addr), ntohs(remetente.sin_port));
-    printf("> \"%s\"\n", msg);
+	msg[len] = '\0';
+    printf("> MSG FROM %s:%d\n> \"%s\"\n", inet_ntoa(remetente.sin_addr), ntohs(remetente.sin_port), msg);
 
     /* fechar o Socket */
     closesocket(sock);

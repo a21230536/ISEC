@@ -11,7 +11,7 @@ void die(char *msg)
     exit(EXIT_FAILURE);
 }
 
-void sair(char *msg)
+void sai(char *msg)
 {
     fprintf(stderr, "ERRO [%s]\n", msg);
     exit(1);
@@ -30,7 +30,7 @@ void falha(char *s)
 
 	erro(wsaerr);
 	sprintf(msg, "FALHA <%s - %s>", s, wsaerr);
-	sair(msg);
+	sai(msg);
 }
 
 void supper(char *s)

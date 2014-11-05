@@ -15,7 +15,7 @@ typedef struct _res {
 } RES;
 
 void die(char *);
-void sair(char *);
+void sai(char *);
 char *erro(char *);
 void falha(char *);
 void supper(char *);
