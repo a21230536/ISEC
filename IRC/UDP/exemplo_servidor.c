@@ -33,7 +33,7 @@ main()
     /* vincular ao socket */
     if (bind(sock, (SOCKADDR *)&servidor, sizeof(servidor)) == SOCKET_ERROR) falha("bind");
 
-    /* ciclo para receber>converter>enviar mensagens de clientes*/
+    /* ciclo para receber>converter>enviar mensagens */
     while(1) {
         if((len = recvfrom(sock, msg, sizeof(msg), 0, (SOCKADDR *) &cliente, &size)) == SOCKET_ERROR) {
             erro(msg);
