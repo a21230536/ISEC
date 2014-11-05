@@ -12,7 +12,7 @@ main(int argc, char *argv[])
     WSADATA wsadata;
     SOCKADDR_IN servidor, remetente;
     char msg[256];
-    int wsaresult, len, size;
+    int wsaresult, len, size, timeout = TIMEOUT*1000;
 
     /* iniciar WinSock */
     if (WSAStartup(MAKEWORD(2, 2), &wsadata)) {
@@ -35,6 +35,9 @@ main(int argc, char *argv[])
 
     /* enviar a mensagem ao servidor */
     if (sendto(sock, msg, strlen(msg), 0, (SOCKADDR *)&servidor, sizeof(servidor)) == SOCKET_ERROR) falha("sendto");
+
+    /* configurar o Socket para timeout */
+    if(setsockopt(sock, SOL_SOCKET, SO_RCVTIMEO, (char *)&timeout, sizeof(timeout)) == -1) falha("setsockopt");
 
     /* receber mensagem do servidor */
     size = sizeof(SOCKADDR_IN);

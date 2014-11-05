@@ -19,18 +19,29 @@ void sai(char *msg)
 
 char *erro(char *msg)
 {
-    sprintf(msg, "WSA ERROR %d\n", WSAGetLastError());
+    char errname[32];
+    int errcode = WSAGetLastError();
+    
+    switch (errcode) {
+        case 10060:
+            strcpy(errname, "TIMEOUT");
+            break;
+        default:
+            strcpy(errname, "?");
+    }
+
+    sprintf(msg, "WSA ERROR %d (%s)", errcode, errname);
     return msg;
 }
 
 void falha(char *s)
 {
-	char wsaerr[32];
-	char msg[256];
+    char wsaerr[32];
+    char msg[256];
 
-	erro(wsaerr);
-	sprintf(msg, "FALHA <%s - %s>", s, wsaerr);
-	sai(msg);
+    erro(wsaerr);
+    sprintf(msg, "FALHA <%s> %s", s, wsaerr);
+    sai(msg);
 }
 
 void supper(char *s)

@@ -40,6 +40,7 @@ main()
             continue;
         }
 
+        /* converter em maiúculas */
         msg[len] = '\0';
         supper(msg);
 
