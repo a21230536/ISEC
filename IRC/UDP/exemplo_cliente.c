@@ -1,5 +1,4 @@
-/* SUPPER CLIENTE UDP
-   Servidor recebe uma mensagem (ascii), converte-a em maiúsculas e devolve-a ao cliente */
+/* SUPPER CLIENTE UDP */
 #include <stdio.h>
 #include <winsock.h>
 #include <string.h>
@@ -13,13 +12,13 @@ main(int argc, char *argv[])
     WSADATA wsadata;
     SOCKADDR_IN servidor, remetente;
     char msg[256];
-	int wsaresult, len, size;
+    int wsaresult, len, size;
 
     /* iniciar WinSock */
-	if (WSAStartup(MAKEWORD(2, 2), &wsadata)) {
-		sprintf(msg, "falha ao iniciar o WinSock (%d)", wsaresult);
-		sai(msg);
-	}
+    if (WSAStartup(MAKEWORD(2, 2), &wsadata)) {
+        sprintf(msg, "falha ao iniciar o WinSock (%d)", wsaresult);
+        sai(msg);
+    }
 
     /* construir o endereço do servidor */
     memset((char *)&servidor, 0, sizeof(servidor));
@@ -42,7 +41,7 @@ main(int argc, char *argv[])
     if ((len = recvfrom(sock, msg, sizeof(msg), 0, (SOCKADDR *)&remetente, &size)) == SOCKET_ERROR) falha("recvfrom");
 
     /* mostrar a mensagem recebida */
-	msg[len] = '\0';
+    msg[len] = '\0';
     printf("> MSG FROM %s:%d\n> \"%s\"\n", inet_ntoa(remetente.sin_addr), ntohs(remetente.sin_port), msg);
 
     /* fechar o Socket */
