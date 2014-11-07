@@ -21,7 +21,7 @@ O autor Vitor Gonçalves escreveu 1 livro(s) e 1 sob a alçada da editora FCA-ED
  12 linhas seleccionadas
 */
 SELECT 'O autor '||autores.nome||' escreveu '||COUNT(livros.titulo)||' livro'
-  ||(CASE COUNT(livros.titulo) when 1 then '' ELSE 's' end)
+  ||(CASE COUNT(livros.titulo) WHEN 1 THEN '' ELSE 's' END)
   ||' sob a alçada da editora "FCA - EDITORA".' AS "Resultado"
 FROM livros, autores
 WHERE autores.codigo_autor = livros.codigo_autor
