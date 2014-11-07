@@ -20,18 +20,12 @@ O autor Vitor Gonçalves escreveu 1 livro(s) e 1 sob a alçada da editora FCA-ED
 
  12 linhas seleccionadas
 */
-SELECT 'O autor '||autores.nome||' escreveu '||X.t||' livro(s) e '
-    ||Y.t||' sob a alçada da editora FCA-EDITORA' AS "Resultado"
-FROM autores, (SELECT codigo_autor,
-               COUNT(titulo) t
-               FROM livros
-               GROUP BY codigo_autor) X,
-              (SELECT codigo_autor,
-               COUNT(titulo) t
-               FROM livros
-               WHERE codigo_editora = (SELECT codigo_editora
-                                       FROM editoras
-                                       WHERE nome = 'FCA - EDITORA')
-               GROUP BY codigo_autor) Y
+SELECT 'O autor '||A.nome||' escreveu '||X.t||' livro(s) e '||Y.t||' sob a alçada da editora FCA-EDITORA' "Resultado"
+FROM autores A,
+    -- tabela fabricada L1 (todos os livros em groupos por autor)
+    (SELECT codigo_autor, COUNT(titulo) t FROM livros GROUP BY codigo_autor) X,
+    -- tabela fabricada L2 (livros da FCA-EDITORA em grupos por autor)
+    (SELECT codigo_autor, COUNT(titulo) t FROM livros WHERE codigo_editora = (SELECT codigo_editora
+        FROM editoras WHERE nome = 'FCA - EDITORA') GROUP BY codigo_autor) Y
 WHERE autores.codigo_autor = X.codigo_autor
 AND autores.codigo_autor = Y.codigo_autor;
