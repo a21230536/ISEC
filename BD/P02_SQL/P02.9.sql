@@ -6,8 +6,8 @@
 
 SELECT titulo "Título",
   TO_CHAR(ROUND(preco_tabela/paginas, 2), '0D99') "Custo/página",
-  CEIL(ROUND(preco_tabela/paginas, 2)) "Superior",
-  FLOOR(ROUND(preco_tabela/paginas, 2)) "Inferior"
+  CEIL(preco_tabela/paginas) "Superior",
+  FLOOR(preco_tabela/paginas) "Inferior"
 FROM livros
 WHERE paginas BETWEEN 400 AND 700
 ORDER BY 2;
