@@ -4,7 +4,7 @@
 
 SELECT nome "Nome Completo",
   SUBSTR(nome, 0, INSTR(nome, ' ') - 1) "Primeiro Nome",
-  SUBSTR(nome, INSTR(nome, ' ', -1) + 1) "Último Apelido"
+  SUBSTR(nome, INSTR(nome, ' ', -1) + 1) "Último  Nome"
 FROM autores;
 
 /*
