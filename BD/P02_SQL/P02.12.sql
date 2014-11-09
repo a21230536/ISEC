@@ -8,7 +8,7 @@ SELECT nome "Nome Completo",
 FROM autores;
 
 /*
-Nome Completo                  Primeiro Nome                  Último Apelido
+Nome Completo                  Primeiro Nome                  Último Nome
 ------------------------------ ------------------------------ ------------------------------
 Sérgio Sousa                   Sérgio                         Sousa
 Vitor Gonçalves                Vitor                          Gonçalves
