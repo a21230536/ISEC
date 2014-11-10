@@ -1,7 +1,6 @@
 -- P06
 -- 2
--- Para cada autor, mostre a quantidade total de livros que editou e quantos editou
--- pela editora ‘FCA – EDITORA’.
+-- Para cada autor, mostre a quantidade total de livros que editou e quantos editou pela editora ‘FCA – EDITORA’.
 /*
 Resultado
 ------------------------------------------------------------------------------------
