@@ -12,7 +12,7 @@ WHERE genero = 'Policial';
 /*
 TITULO                                             PRECO_TABELA PRECO_COM_AUMENTO
 -------------------------------------------------- ------------ -----------------
-O mistério da porta trancada                                 29                33 
-A balada de Hill Street                                      50                57 
+O mistério da porta trancada                                 29                33
+A balada de Hill Street                                      50                57
 A balada de Nova Iorque                                      18                20
 */
