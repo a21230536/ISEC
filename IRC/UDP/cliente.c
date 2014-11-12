@@ -22,7 +22,7 @@ int main(int argc, char *argv[])
     int iResult, nbytes, i, serv_udp_port = 0;
     int sockaddr_in_len = sizeof(struct sockaddr_in), res;
     struct sockaddr_in serv_addr, local_name, reply_addr;
-    struct timeval timeout = { TIMEOUT * 1000, 0 };/* TIMEOUT em Publico.h */
+    struct timeval timeout = {TIMEOUT * 1000, 0};/* TIMEOUT em Publico.h */
     char buffer[BUFFERSIZE] = {'\0'}, serv_host_addr[16] = {'\0'};
     char sintaxe[] = "-msg <msg> [-ip <server_ip> [-port <server_port>]]", verify[2][32];
 
