@@ -42,12 +42,3 @@ void falha(char *s)
     sprintf(msg, "FALHA <%s> %s", s, wsaerr);
     sai(msg);
 }
-
-void supper(char *s)
-{
-    int i, n = strlen(s);
-
-    for(i=0; i<n; i++) {
-        s[i] = toupper(s[i]);
-    }
-}

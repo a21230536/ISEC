@@ -19,6 +19,5 @@ void die(char *);
 void sai(char *);
 char *erro(char *);
 void falha(char *);
-void supper(char *);
 
 #endif
