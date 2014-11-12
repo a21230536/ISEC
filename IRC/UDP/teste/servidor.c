@@ -40,6 +40,7 @@ main()
         total = 0.0;
         for (n = 0; n < N; n++) {
             if(recvfrom(sock, (char*)&dec, sizeof(dec), 0, (SOCKADDR *) &clis[n], &size) == SOCKET_ERROR) {
+                n--;
                 erro(msg);
                 continue;
             }
