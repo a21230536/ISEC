@@ -9,12 +9,6 @@
 #define TRUE 1
 #define FALSE 0
 
-typedef struct _res {
-    char msg[256];
-    int casamento;
-    struct sockaddr_in noivo;
-} RES;
-
 void die(char *);
 void sai(char *);
 char *erro(char *);
