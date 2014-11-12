@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <winsock.h>
 #include <string.h>
-#include "Publico.h"
+#include "publico.h"
 
 #pragma comment(lib, "ws2_32.lib")
 
