@@ -8,5 +8,7 @@
 
 void Abort(char *, SOCKET);
 void AtendeCliente(int);
+int writeN(SOCKET, char *, int);
+int readLine(SOCKET, char *, int);
 
 #endif

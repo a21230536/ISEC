@@ -54,8 +54,9 @@ int main(int argc, char *argv[])
     }
 
     /* ENVIAR MENSAGEM AO SERVIDOR */
-    msg_len = strlen(argv[1]);
-    if ((nbytes = send(sock, argv[1], msg_len, 0)) == SOCKET_ERROR) {
+    sprintf_s(buffer, BUFFERSIZE, "%s\n", argv[1]);
+    msg_len = strlen(buffer);
+    if ((nbytes = writeN(sock, buffer, msg_len)) == SOCKET_ERROR) {
         Abort("Impossibilidade de transmitir mensagem...", sock);
     }
     else if (nbytes < msg_len) {
@@ -66,15 +67,12 @@ int main(int argc, char *argv[])
     }
 
     /* RECEBER (ESPERAR) CONFIRMAÇÃO DO SERVIDOR */
-    nbytes = recv(sock, buffer, sizeof(buffer), 0);
-
-    if (nbytes == SOCKET_ERROR) {
+    if ((nbytes = readLine(sock, buffer, sizeof(buffer))) == SOCKET_ERROR) {
         Abort("Impossibilidade de receber confirmacao", sock);
     }
 
     buffer[nbytes] = '\0';
-
-    printf("<CLI> Confirmacao recebida {%s}.\n",buffer);
+    printf("<CLI> Confirmacao recebida {%s}.\n", buffer);
 
     /* FECHAR O SOCKET */
     closesocket(sock);
