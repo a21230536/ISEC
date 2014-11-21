@@ -28,6 +28,7 @@ public:
     //-----------------------------------------------------------------------------------------------------------------
     // (d) Acrescente construtores e destrutores às classes ...
     //-----------------------------------------------------------------------------------------------------------------
+    Rectangulo(){}
 
     // I - A posição (Ponto P) do rectângulo é independente (pertence ao próprio Rectângulo)
     Rectangulo(Ponto, int, int);// CENÁRIO (INSINUADO) DO ENUNCIADO
