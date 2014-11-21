@@ -8,7 +8,7 @@ ALTER TABLE livros_backup
 ADD CONSTRAINT codigo_livro_pk PRIMARY KEY (codigo_livro);
 
 ALTER TABLE livros_backup
-ADD CONSTRAINT codigoeditora_fk FOREIGN KEY (codigo_editora)
+ADD CONSTRAINT codigo_editora_fk FOREIGN KEY (codigo_editora)
     REFERENCES editoras (codigo_editora);
 
 ALTER TABLE livros_backup
