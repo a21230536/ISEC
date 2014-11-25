@@ -1,4 +1,5 @@
 #pragma once
+
 #ifndef RECTANGULO_H
 #define RECTANGULO_H
 
@@ -7,31 +8,34 @@
 class Rectangulo
 {
     Ponto *p;
-    Ponto O;
+    Ponto _P;
 
-    int xx;
-    int yy;
+    int _largura;
+    int _altura;
 
 public:
+
     Ponto P;
-    int altura () const;
-    int largura() const;
+    Ponto ponto() const { return _P; }
+
+    int Rectangulo::largura() const { return _largura; }
+    int Rectangulo::altura() const { return _altura; }
+    void largura(int);
+    void altura(int);   
+
     int area() const;
     int perimetro() const;
-    Ponto ponto() const{
-        return O;
-    }
-
-    void altura(int a);
-    void largura(int l);
+    
+    string str();
+    void info() { cout << "> " << str() << endl; }
 
     //-----------------------------------------------------------------------------------------------------------------
     // (d) Acrescente construtores e destrutores às classes ...
     //-----------------------------------------------------------------------------------------------------------------
-    Rectangulo(){}
+    Rectangulo() {}
 
     // I - A posição (Ponto P) do rectângulo é independente (pertence ao próprio Rectângulo)
-    Rectangulo(Ponto, int, int);// CENÁRIO (INSINUADO) DO ENUNCIADO
+    Rectangulo(Ponto, int, int);// CENÁRIO DO ENUNCIADO (?)
 
     // II - A posição do rectângulo (Ponto *) é dependente (pertence a um Ponto exterior)
     Rectangulo(Ponto*, int, int);
@@ -41,6 +45,8 @@ public:
 
     // destrutor
     ~Rectangulo();
+
+    static bool log;
 };
 
 #endif

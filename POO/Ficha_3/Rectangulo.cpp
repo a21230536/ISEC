@@ -1,18 +1,11 @@
 #include <iostream>
+#include <sstream>
 #include "Ponto.h"
 #include "Rectangulo.h"
 
 using namespace std;
 
-int Rectangulo::altura() const
-{
-    return yy;
-}
-
-int Rectangulo::largura() const
-{
-    return xx;
-}
+bool Rectangulo::log = false;
 
 int Rectangulo::area() const
 {
@@ -20,7 +13,7 @@ int Rectangulo::area() const
 }
 int Rectangulo::perimetro() const
 {
-    return (2 * xx + 2 * yy);
+    return (2*largura() + 2*altura());
 }
 
 void Rectangulo::altura(int a)
@@ -33,53 +26,60 @@ void Rectangulo::largura(int l)
     if (l < 0) return;
 }
 
+string Rectangulo::str()
+{
+	ostringstream textual;
+	textual << "[" << P.str() << "," << largura() << "," << altura() << "]";
+	return textual.str();
+}
+
 //---------------------------------------------------------------------------------------------------------------------
 // (d) Acrescente construtores e destrutores às classes ... ver os objectos ... que estão a ser criados e destruídos.
 //---------------------------------------------------------------------------------------------------------------------
-Rectangulo::Rectangulo(Ponto *P, int l, int a)
+Rectangulo::Rectangulo(Ponto *P, int largura, int altura)
 {
-    if (l < 0) l = 0;
-    if (a < 0) a = 0;
+	if (largura < 0) largura = 0;
+	if (altura < 0) altura = 0;
 
-    xx = l;
-    yy = a;
+	_largura = largura;
+	_altura = altura;
 
     p = P;
 
-    cout << ">>> construindo Rectangulo: largura=" << largura() << ", altura=" << altura() << ", P=" << p->str() << endl;
+	if (log) cout << "> LOG Rectangulo construindo " << str() << "; P=" << p->str() << endl;
 }
-// CENÁRIO (INSINUADO) DO ENUNCIADO
-Rectangulo::Rectangulo(Ponto p, int l, int a)
+// CENÁRIO DO ENUNCIADO (?)
+Rectangulo::Rectangulo(Ponto p, int largura, int altura)
 {
-    if (l < 0) l = 0;
-    if (a < 0) a = 0;
+    if (largura < 0) largura = 0;
+    if (altura < 0) altura = 0;
 
-    xx = l;
-    yy = a;
+	_largura = largura;
+	_altura = altura;
 
     P = p;
 
-    cout << ">>> construindo Rectangulo: largura=" << largura() << ", altura=" << altura() << ", P->" << P.str() << endl;
+	if (log) cout << "> LOG Rectangulo construindo " << str() << "; P->" << P.str() << endl;
     this->p = NULL;
 }
 //
-Rectangulo::Rectangulo(int l, int a, int x, int y)
-    :O(x, y)
+Rectangulo::Rectangulo(int largura, int altura, int x, int y)
+    :_P(x, y)
 {
-    if (l < 0) l = 0;
-    if (a < 0) a = 0;
+    if (largura < 0) largura = 0;
+    if (altura < 0) altura = 0;
 
-    xx = l;
-    yy = a;
+    _largura = largura;
+    _altura = altura;
 
-    cout << ">>> construindo Rectangulo: largura=" << largura() << ", altura=" << altura() << ", O=" << O.str() << endl;
+	if (log) cout << "> LOG Rectangulo construindo " << str() << "; _P=" << _P.str() << endl;
     this->p = NULL;
 }
 //
 Rectangulo::~Rectangulo(){
-    cout << ">>> destruindo Rectangulo: largura=" << largura() << ", altura=" << altura()
-        << ", O=" << O.str() << ", P=" << P.str();
-
-    if(p == NULL) cout << endl;
-    else cout << ", p->" << p->str() << endl;
+	if (log) {
+		cout << "> LOG ~Rectangulo destruindo " << str();
+		if (p != NULL) cout << "; p->" << p->str();
+		cout << endl;
+	}
 }
