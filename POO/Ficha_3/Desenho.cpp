@@ -60,7 +60,7 @@ int Desenho::eliminar_area_superior(double area)
 {
     int n = 0;
 
-    for (std::vector<Rectangulo>::iterator it = _retangulos.begin(); it != _retangulos.end(); it++) {
+    for (vector<Rectangulo>::iterator it = _retangulos.begin(); it != _retangulos.end(); it++) {
         if (it->area() > area) {
             cout << "> a eliminar retangulo " << it->str() << endl;
             it = _retangulos.erase(it);

@@ -12,7 +12,6 @@ using namespace std;
 class Desenho
 {
 private:
-
     vector<Rectangulo> _retangulos;
 
     bool _fora(Ponto, Rectangulo);
@@ -28,10 +27,10 @@ public:
     bool retangulo(Rectangulo);
 
     // (ii) "Obter o conjunto de rectângulos cujo canto superior esquerdo esteja num dado ponto."
-    vector<Rectangulo> conjunto(Ponto) const;
+	vector<Rectangulo> conjunto(Ponto) const;
 
     // (iii) "Eliminar todos os rectângulos cuja área seja superior a um valor dado;"
-    int eliminar_area_superior(double);
+	int eliminar_area_superior(double);
 
     // (iv) "Obter a soma das áreas de todos os rectângulos do desenho;"
     double areas();
