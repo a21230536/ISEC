@@ -1,69 +1,35 @@
 #include <iostream>
 #include <cmath>
 #include <sstream>
-
 #include "Ponto.h"
 
 using namespace std;
 
-Ponto::Ponto(int a, int b){
-	x = a, y = b;
-	cout << ">>> construindo Ponto " << str() << endl;
+bool Ponto::log = false;
 
-	/*/ TESTE
-	X(a);
-	Y(b);
-	cout << "Ponto(x,y)=(" << X() << "," << Y() << ")" << endl;
-	//*/
+Ponto::Ponto(int x, int y){
+    this->x(x), this->y(y);
+
+    if (log) cout << "> Ponto > construindo " << str() << endl;
 }
 
 Ponto::~Ponto(){
-	cout << ">>> destruindo Ponto " << str() << endl;
+    if (log) cout << "> ~Ponto > destruindo Ponto " << str() << endl;
 }
 
-int Ponto::getX() const {
-	return x;
-	//return x++;// ERRO! porque x é constante
+double Ponto::d(const Ponto& P) const{
+    int X = x() - P.x();
+    int Y = y() - P.y();
+
+    return sqrt(X*X + Y*Y);
+    //double d2 = (x - P.x)*(x - P.x) + (y - P.y)*(y - P.y);
+    //return sqrt(d2);
 }
 
-void Ponto::setX(int n){
-	x = n;
-}
+string Ponto::str(){
+    ostringstream textual;
 
-int Ponto::getY() const {
-	return y;
-	//return this->x;
-}
+    textual << "(" << x() << "," << y() << ")";
 
-void Ponto::setY(int n){
-	y = n;
-}
-
-double Ponto::calcDist(const Ponto& P) const{
-	//double d2 = (x - P.x)*(x - P.x) + (y - P.y)*(y - P.y);
-	int X = x - P.x, Y = y - P.y;
-
-	//return sqrt(d2);
-	return sqrt(X*X + Y*Y);
-}
-
-string Ponto::getString(){
-	ostringstream textual;
-	textual << "(" << x << "," << y << ")";
-
-	return textual.str();
-}
-
-//TESTE
-int Ponto::X() const{
-	return x;
-}
-void Ponto::X(int X){
-	x = X;
-}
-int Ponto::Y() const{
-	return y;
-}
-void Ponto::Y(int Y){
-	y = Y;
+    return textual.str();
 }
