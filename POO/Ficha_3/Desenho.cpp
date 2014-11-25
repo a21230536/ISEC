@@ -1,9 +1,12 @@
 #include <iostream>
 #include <sstream>
+#include "Ponto.h"
 #include "Rectangulo.h"
 #include "Desenho.h"
 
 using namespace std;
+
+bool Desenho::log = false;
 
 Desenho::Desenho(vector<Rectangulo> retangulos)
 {
@@ -12,31 +15,40 @@ Desenho::Desenho(vector<Rectangulo> retangulos)
     }
 }
 
+double Desenho::areas() {
+    double area = 0;
+
+    for (Rectangulo retangulo : _retangulos) {
+        area += retangulo.area();
+    }
+
+    return area;
+};
+
 // adiciona um retângulo ao desenho
 bool Desenho::retangulo(Rectangulo retangulo)
 {
     // validar o retangulo
-    for (unsigned int i = 0; i < _retangulos.size(); i++) {
-        if (_intersecta(retangulo, _retangulos[i])) {
-            // intersecta um retângulo existente
-            return false;
+    for (Rectangulo existente : _retangulos) {
+        if (_intersecta(retangulo, existente)) {
+            return false;// o retângulo intersecta um existente
         }
     }
 
-    _area += retangulo.area();
+    // adiconar retângulo
     _retangulos.push_back(retangulo);
 
     return true;
 }
 
 // devolve um conjunto de retângulos num ponto
-vector<Rectangulo> Desenho::retangulo(Ponto ponto) const
+vector<Rectangulo> Desenho::conjunto(Ponto ponto) const
 {
     vector<Rectangulo> conjunto;
 
-    for (unsigned int i = 0; i < _retangulos.size(); i++) {
-        if (_retangulos[i].P.X() == ponto.X() && _retangulos[i].P.Y() == ponto.Y()) {
-            conjunto.push_back(_retangulos[i]);
+    for (Rectangulo retangulo : _retangulos) {
+        if (retangulo.P.x() == ponto.x() && retangulo.P.y() == ponto.y()) {
+            conjunto.push_back(retangulo);
         }
     }
 
@@ -44,29 +56,27 @@ vector<Rectangulo> Desenho::retangulo(Ponto ponto) const
 }
 
 // elimina os rectângulos com área superior a area
-int Desenho::eliminar(double area)
+int Desenho::eliminar_area_superior(double area)
 {
     int n = 0;
-    for (unsigned int i = 0; i < _retangulos.size(); i++) {
-        if (_retangulos[i].area() > area) {
-            _area -= _retangulos[i].area();
 
-            //FAZER eliminar retângulo
-
+    for (std::vector<Rectangulo>::iterator it = _retangulos.begin(); it != _retangulos.end(); it++) {
+        if (it->area() > area) {
+            cout << "> a eliminar retangulo " << it->str() << endl;
+            it = _retangulos.erase(it);
             n++;
         }
     }
 
-    // rectângulos eliminados
-    return n;
+    return n;// n = número de rectângulos eliminados
 }
 
 // devolve uma string descritiva do desenho
-string Desenho::str() const
+string Desenho::str() //const
 {
     ostringstream textual;
 
-    textual << "o desenho tem " << _retangulos.size() << " retangulos" << endl;
+    textual << "o desenho tem " << _retangulos.size() << " retangulo(s) que totaliza(m) " << areas() << " de area";
     return textual.str();
 }
 
@@ -76,33 +86,33 @@ bool Desenho::_fora(Ponto p, Rectangulo r)
     return !_pos(p, r);
 }
 
-// obtém a posição dum ponto em relação a um retãngulo
+// obtém a posição dum ponto em relação a um rectângulo
 int Desenho::_pos(Ponto p, Rectangulo r)
 {
-    int x0 = r.P.X();
-    int y0 = r.P.Y();
-    int x1 = r.P.X() + r.largura();
-    int y1 = r.P.Y() + r.altura();
+    int x0 = r.P.x();
+    int y0 = r.P.y();
+    int x1 = r.P.x() + r.largura();
+    int y1 = r.P.y() + r.altura();
 
     // oeste
-    if (p.X() < x0) {
-        if (p.Y() < y0) return NO;
-        else if (p.Y() > y0) return SO;
+    if (p.x() < x0) {
+        if (p.y() < y0) return NO;
+        else if (p.y() > y0) return SO;
         return O;
     }
 
     // este
-    if(p.X() > x1) {
-        if (p.Y() > y0) return SE;
-        else if (p.Y() < y0) return NE;
+    if(p.x() > x1) {
+        if (p.y() > y0) return SE;
+        else if (p.y() < y0) return NE;
         return E;
     }
 
     // norte
-    if (p.Y() < y0) return N;
+    if (p.y() < y0) return N;
 
     // sul
-    if (p.Y() > y1) return S;
+    if (p.y() > y1) return S;
 
     // dentro
     return 0;
@@ -111,33 +121,33 @@ int Desenho::_pos(Ponto p, Rectangulo r)
 // verifica se um retãngulo intersecta outro
 bool Desenho::_intersecta(Rectangulo R0, Rectangulo R1)
 {
-    Ponto P(R1.P.X(), R1.P.Y());
-    Ponto Q(R1.P.X() + R1.largura(), R1.P.Y() + R1.altura());
+    Ponto P(R1.P.x(), R1.P.y());
+    Ponto Q(R1.P.x() + R1.largura(), R1.P.y() + R1.altura());
 
     int posP = _pos(P, R0);
     int posQ = _pos(Q, R0);
 
     switch (posP) {
     case N:
-        if (Q.Y() < R0.P.Y()) return false;
+        if (Q.y() < R0.P.y()) return false;
         return true;
     case NE:
         if (posQ == O || posQ == S) return true;
         return false;
     case E:
-        if (Q.X() > R0.P.X() + R0.largura()) return false;
+        if (Q.x() > R0.P.x() + R0.largura()) return false;
         return true;
     case SE:
         if (posQ == O || posQ == N) return true;
         return false;
     case S:
-        if (Q.Y() > R0.P.Y() + R0.altura()) return false;
+        if (Q.y() > R0.P.y() + R0.altura()) return false;
         return true;
     case SO:
         if (posQ == O || posQ == E) return true;
         return false;
     case O:
-        if (Q.X() < R0.P.X()) return false;
+        if (Q.x() < R0.P.x()) return false;
         return true;
     case NO:
         if (posQ == S || posQ == E) return true;
