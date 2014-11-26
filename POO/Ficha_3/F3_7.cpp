@@ -25,23 +25,23 @@ int main()
          << "; BI: " << titular->bi()
          << "; NIF: " << titular->nif() << endl;
 
-	// c) classe Banco
-	Banco caixa("Caixa");
-	cout << "> caixa.nomes();// " << caixa.nomes() << endl;
-	cout << "> caixa.soma();// " << caixa.soma() << endl;
-	cout << "> caixa.conta(&joe);// " << caixa.conta(&joe) << endl;
-	cout << "> caixa.conta(joe.bi(), 804);// " << caixa.movimento(joe.bi(), 804) << endl;
-	cout << "> caixa.nomes();// " << caixa.nomes() << endl;
-	cout << "> caixa.soma();// " << caixa.soma() << endl;
-	cout << "> Pessoa maria(\"Maria Silva\", \"0000000-0YY\", \"000 000 000\");" << endl;
-	Pessoa maria("Maria Silva", "0000000-0YY", "000 000 000");
-	cout << "> caixa.conta(&maria);// " << caixa.conta(&maria) << endl;
-	cout << "> caixa.conta(maria.bi(), 1200);// " << caixa.movimento(maria.bi(), 1200) << endl;
-	cout << "> caixa.conta(maria.bi(), -200);// " << caixa.movimento(maria.bi(), -200) << endl;
-	cout << "> caixa.saldo(maria.bi());// " << caixa.saldo(maria.bi()) << endl;
-	cout << "> caixa.conta(joe.bi())->saldo();// " << caixa.conta(joe.bi()).saldo() << endl;
-	cout << "> caixa.soma();// " << caixa.soma() << endl;
-	cout << "> caixa.nomes();// " << caixa.nomes() << endl;
-	
+    // c) classe Banco
+    Banco caixa("Caixa");
+    cout << "> caixa.nomes();// " << caixa.nomes() << endl;
+    cout << "> caixa.soma();// " << caixa.soma() << endl;
+    cout << "> caixa.conta(&joe);// " << caixa.conta(&joe) << endl;
+    cout << "> caixa.conta(joe.bi(), 804);// " << caixa.movimento(joe.bi(), 804) << endl;
+    cout << "> caixa.nomes();// " << caixa.nomes() << endl;
+    cout << "> caixa.soma();// " << caixa.soma() << endl;
+    cout << "> Pessoa maria(\"Maria Silva\", \"0000000-0YY\", \"000 000 000\");" << endl;
+    Pessoa maria("Maria Silva", "0000000-0YY", "000 000 000");
+    cout << "> caixa.conta(&maria);// " << caixa.conta(&maria) << endl;
+    cout << "> caixa.conta(maria.bi(), 1200);// " << caixa.movimento(maria.bi(), 1200) << endl;
+    cout << "> caixa.conta(maria.bi(), -200);// " << caixa.movimento(maria.bi(), -200) << endl;
+    cout << "> caixa.saldo(maria.bi());// " << caixa.saldo(maria.bi()) << endl;
+    cout << "> caixa.conta(joe.bi())->saldo();// " << caixa.conta(joe.bi()).saldo() << endl;
+    cout << "> caixa.soma();// " << caixa.soma() << endl;
+    cout << "> caixa.nomes();// " << caixa.nomes() << endl;
+
     return 0;
 }

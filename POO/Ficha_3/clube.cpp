@@ -28,7 +28,7 @@ bool Clube::remove(string bi)
 {
     itPessoa it = socio(bi);
     if (it == _socios.end()) return false;
-    
+
     _socios.erase(it);
     return true;
 }
