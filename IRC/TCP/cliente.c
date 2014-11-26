@@ -22,10 +22,11 @@ int main(int argc, char *argv[])
     struct sockaddr_in serv_addr;
     char buffer[BUFFERSIZE];
     WSADATA wsaData;
+    struct hostent *server_host;
 
     /* testar a sintaxe */
     if(argc != 4) {
-        fprintf(stderr, "<CLI> Sintaxe: %s <frase_a_enviar> <ip_destino> <porto_destino>\n", argv[0]);
+        fprintf(stderr, "<CLI> Sintaxe: %s <mensagem> <servidor> <porto>\n", argv[0]);
         exit(EXIT_FAILURE);
     }
 
@@ -45,8 +46,26 @@ int main(int argc, char *argv[])
     /* CONSTRUIR O ENDEREÇO DO SERVIDOR */
     memset((char*)&serv_addr, 0, sizeof(serv_addr));
     serv_addr.sin_family = AF_INET;
-    serv_addr.sin_addr.s_addr = inet_addr(argv[2]);
-    serv_addr.sin_port=htons(atoi(argv[3]));
+    serv_addr.sin_port = htons(atoi(argv[3]));
+    /* o endereço do servidor é alfanumérico? */
+    if (isalpha(argv[2][0])) {
+        server_host = gethostbyname(argv[2]);
+        if (server_host == NULL) {
+            switch (WSAGetLastError()) {
+            case WSAHOST_NOT_FOUND:
+                Abort("HOST NAO ENCONTRADO", sock);
+            case WSANO_DATA:
+                Abort("NENHUM REGISTO ENCONTRADO", sock);
+            default:
+                Abort("(gethostbyaddr)", sock);
+            }
+        }
+        if (server_host->h_addrtype == AF_INET && server_host->h_addr_list[0] != 0) {
+            serv_addr.sin_addr.s_addr = *(u_long *)server_host->h_addr_list[0];
+            //printf("> IP address: %s\n", inet_ntoa(serv_addr.sin_addr));
+        }
+    }
+    else serv_addr.sin_addr.s_addr = inet_addr(argv[2]);
 
     /* ESTABELECER LIGACAO COM O SERVIDOR */
     if (connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) == SOCKET_ERROR) {

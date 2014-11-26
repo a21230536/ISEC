@@ -11,7 +11,7 @@
  */
 void Abort(char *msg, SOCKET sock)
 {
-    fprintf(stderr, "\a<SER >Erro fatal: <%d>\n", WSAGetLastError());
+    fprintf(stderr, "\a<SER> Erro fatal: <%d> %s\n", WSAGetLastError(), msg);
 
     if (sock != INVALID_SOCKET) closesocket(sock);
 
@@ -61,7 +61,7 @@ void AtendeCliente(int sock)
 /*
  * writeN
  * ------
- * Sends n bytes of data through socket.
+ * Envia n bytes de dados pelo socket.
  */
 int writeN(SOCKET sock, char *buffer, int nBytes)
 {
@@ -84,7 +84,7 @@ int writeN(SOCKET sock, char *buffer, int nBytes)
 /*
  * readLine
  * --------
- * Reads a line of data from socket.
+ * Lê uma linha de 'texto' do socket.
  */
 int readLine(SOCKET sock, char *buffer, int tamMax)
 {
@@ -92,7 +92,9 @@ int readLine(SOCKET sock, char *buffer, int tamMax)
     int n = 0, i = 0;
 
     while (i < tamMax - 1) {
-        if ((n = recv(sock, &c, sizeof(c), 0)) == SOCKET_ERROR) return SOCKET_ERROR;
+        if ((n = recv(sock, &c, sizeof(c), 0)) == SOCKET_ERROR) {
+            return SOCKET_ERROR;
+        }
 
         if (n == 0 || c == '\n') break;
         if (c == '\r') continue;
