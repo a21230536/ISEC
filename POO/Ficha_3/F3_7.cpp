@@ -65,8 +65,7 @@ int main()
     cout << "> caixa.nomes();// " << caixa.nomes() << endl;
 
     // e)
-    fstream dados;
-    dados.open(FICHEIRO, ios::in);
+    ifstream dados(FICHEIRO);
     if (!dados) {
         cout << "> ERRO a abrir o ficheiro " << FICHEIRO << endl;
         return 1;
