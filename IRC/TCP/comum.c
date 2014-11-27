@@ -19,46 +19,6 @@ void Abort(char *msg, SOCKET sock)
 }
 
 /*
- * AtendeCliente
- * -------------
- * Processa a mensagem do cliente.
- */
-void AtendeCliente(int sock)
-{
-    static char buffer[BUFFERSIZE];
-    static unsigned int cont = 0;
-    int nbytes, nBytesSent;
-
-    /* PROCESSA PEDIDO */
-    switch (nbytes = readLine(sock, buffer, BUFFERSIZE)) {
-        case SOCKET_ERROR:
-            fprintf(stderr, "\n<SER> Erro na recepcao de dados...\n");
-            return;
-
-        case  0:
-            fprintf(stderr, "\n<SER> O cliente nao enviou dados...\n");
-            return;
-
-        default:
-            buffer[nbytes] = '\0';
-            printf("\n<SER> Mensagem n. %d recebida {%s}\n", ++cont, buffer);
-
-            /* ENVIA CONFIRMACAO */
-            printf("<SER> Confirma recepcao de mensagem.\n");
-            sprintf_s(buffer, BUFFERSIZE, "%d", nbytes);
-            nbytes = strlen(buffer);
-
-            if ((nBytesSent = writeN(sock, buffer, nbytes)) == SOCKET_ERROR) {
-                fprintf(stderr, "<SER> Impossibilidade de Confirmar.\n");
-            }
-            else if (nBytesSent<nbytes) {
-                fprintf(stderr, "<SER> Mensagem confirmada, mas truncada.\n");
-            }
-            else printf("<SER> Mensagem confirmada.\n");
-    }
-}
-
-/*
  * writeN
  * ------
  * Envia n bytes de dados pelo socket.
@@ -66,6 +26,12 @@ void AtendeCliente(int sock)
 int writeN(SOCKET sock, char *buffer, int nBytes)
 {
     int nRemain = nBytes, nWritten = 0;
+
+    if (buffer[nRemain - 1] != '\n') {
+        buffer[nRemain] = '\n';
+        /* ... não colocar '\0' fora do BUFFERSIZE */
+        buffer[++nRemain] = '\0';
+    }
 
     while (nRemain > 0) {
         if ((nWritten = send(sock, buffer, nRemain, 0)) == SOCKET_ERROR) {

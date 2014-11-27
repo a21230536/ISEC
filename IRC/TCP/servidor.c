@@ -13,6 +13,8 @@
 
 #pragma comment(lib, "Ws2_32.lib")
 
+void AtendeCliente(int);
+
 int main()
 {
     SOCKET sock = INVALID_SOCKET, newSock = INVALID_SOCKET;
@@ -57,6 +59,51 @@ int main()
         else {
             AtendeCliente(newSock);
             closesocket(newSock);
+        }
+    }
+}
+
+/*
+* AtendeCliente
+* -------------
+* Processa a mensagem do cliente.
+*/
+void AtendeCliente(int sock)
+{
+    static char buffer[BUFFERSIZE];
+    static unsigned int cont = 0;
+    int nbytes, nBytesSent;
+
+    while (1) {
+        /* PROCESSA PEDIDO */
+        switch (nbytes = readLine(sock, buffer, BUFFERSIZE)) {
+        case SOCKET_ERROR:
+            fprintf(stderr, "\n<SER> Erro na recepcao de dados...\n");
+            return;
+
+        case  0:
+            fprintf(stderr, "\n<SER> O cliente nao enviou dados...\n");
+            return;
+
+        default:
+            buffer[nbytes] = '\0';
+            printf("\n<SER> Mensagem n. %d recebida {%s}\n", ++cont, buffer);
+
+            /* "SAIR"? */
+            if (nbytes == 4 && strcmp(buffer, "SAIR") == 0) return;
+
+            /* ENVIA CONFIRMACAO */
+            printf("<SER> a confirmar recepcao de mensagem.\n");
+            sprintf_s(buffer, BUFFERSIZE, "%d\n", nbytes);
+            nbytes = strlen(buffer);
+
+            if ((nBytesSent = writeN(sock, buffer, nbytes)) == SOCKET_ERROR) {
+                fprintf(stderr, "<SER> Impossibilidade de Confirmar.\n");
+            }
+            else if (nBytesSent<nbytes) {
+                fprintf(stderr, "<SER> Mensagem confirmada, mas truncada.\n");
+            }
+            else printf("<SER> Mensagem confirmada.\n");
         }
     }
 }

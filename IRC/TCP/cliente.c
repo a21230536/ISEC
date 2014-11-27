@@ -47,6 +47,7 @@ int main(int argc, char *argv[])
     memset((char*)&serv_addr, 0, sizeof(serv_addr));
     serv_addr.sin_family = AF_INET;
     serv_addr.sin_port = htons(atoi(argv[3]));
+
     /* o endereço do servidor é alfanumérico? */
     if (isalpha(argv[2][0])) {
         server_host = gethostbyname(argv[2]);
@@ -72,26 +73,35 @@ int main(int argc, char *argv[])
         Abort("Impossibilidade de estabelecer ligacao", sock);
     }
 
-    /* ENVIAR MENSAGEM AO SERVIDOR */
     sprintf_s(buffer, BUFFERSIZE, "%s\n", argv[1]);
-    msg_len = strlen(buffer);
-    if ((nbytes = writeN(sock, buffer, msg_len)) == SOCKET_ERROR) {
-        Abort("Impossibilidade de transmitir mensagem...", sock);
-    }
-    else if (nbytes < msg_len) {
-        fprintf(stderr, "<CLI> Mensagem truncada...\n");
-    }
-    else {
-        fprintf(stderr, "<CLI> Mensagem \"%s\" enviada\n", argv[1]);
-    }
 
-    /* RECEBER (ESPERAR) CONFIRMAÇÃO DO SERVIDOR */
-    if ((nbytes = readLine(sock, buffer, sizeof(buffer))) == SOCKET_ERROR) {
-        Abort("Impossibilidade de receber confirmacao", sock);
-    }
+    while (1) {
+        /* ENVIAR MENSAGEM AO SERVIDOR */
+        msg_len = strlen(buffer);
+        if ((nbytes = writeN(sock, buffer, msg_len)) == SOCKET_ERROR) {
+            Abort("Impossibilidade de transmitir mensagem...", sock);
+        }
+        else if (nbytes < msg_len) {
+            fprintf(stderr, "<CLI> Mensagem truncada...\n");
+        }
+        else {
+            fprintf(stderr, "<CLI> Mensagem enviada");
+        }
 
-    buffer[nbytes] = '\0';
-    printf("<CLI> Confirmacao recebida {%s}.\n", buffer);
+        /* "SAIR\n"? */
+        if (strcmp(buffer, "SAIR\n") == 0) break;
+
+        /* RECEBER (ESPERAR) CONFIRMAÇÃO DO SERVIDOR */
+        if ((nbytes = readLine(sock, buffer, sizeof(buffer))) == SOCKET_ERROR) {
+            Abort("Impossibilidade de receber confirmacao", sock);
+        }
+
+        buffer[nbytes] = '\0';
+        printf("<CLI> Confirmacao recebida {%s}.\n", buffer);
+
+        printf("<CLI> MSG: ");
+        gets_s(buffer, BUFFERSIZE - 1);
+    }
 
     /* FECHAR O SOCKET */
     closesocket(sock);
