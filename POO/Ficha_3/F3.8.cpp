@@ -25,7 +25,7 @@ int main()
     }
 
     if (pessoas.size() < 30) {
-        cout << "> requer pelo menos 30 alunos" << endl;
+        cout << "> requer pelo menos 30 pessoas" << endl;
     }
 
     Turma um(&pessoas.at(0));
