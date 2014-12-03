@@ -1,4 +1,4 @@
-ISEC
+RIP
 ====
 
-Instituto Superior de Engenharia de Coimbra
+Rest in Peace
